@@ -1,0 +1,33 @@
+.wrap {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: no-repeat url('/images/backgrounds/bg_2.png') center / cover;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--bg-blackout);
+    }
+}
+
+.inside-wrap {
+    text-align: center;
+    z-index: 5;
+}
+
+.error-type {
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.error-description {
+    font-size: 24px;
+    color: var(--greyc5);
+}
