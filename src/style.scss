@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Teko:wght@300..700&display=swap');
+
+:root {
+  --black: #000;
+  --black30per: rgba(0, 0, 0, 0.3);
+  --black50per: rgba(0, 0, 0, 0.5);
+  --white: #fff;
+  --white60per: rgba(255, 255, 255, 0.6);
+  --white80per: rgba(255, 255, 255, 0.8);
+  --greyc5: #C5C5C5;
+  --greyd9: #D9D9D9;
+  --bg-blackout: rgba(14, 14, 14, 0.8);
+
+  --transition: .1s ease-in-out;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  color: #fff;
+}
+
+button, a {
+  cursor: pointer;
+}

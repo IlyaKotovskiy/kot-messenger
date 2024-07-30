@@ -1,0 +1,21 @@
+<section class="auth-section">
+    <div class="wrapper">
+        <h1 class="auth-title">{{title}}</h1>
+        <form method="post" class="auth-form">
+            {{#each inputs}}
+                <label class="input-wrap">
+                    <p class="input-text">{{this.title_input}}</p>
+                    <input class="input" type={{this.type}} name={{name_input}}>
+                </label>
+            {{/each}}
+        </form>
+        <div class="btns">
+            <button type="submit" class="submit-btn">{{submit_btn}}</button>
+            <div class="links">
+                {{#each links}}
+                    <a>{{this}}</a>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</section>
