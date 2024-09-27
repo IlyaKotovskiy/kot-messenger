@@ -1,5 +1,5 @@
+import compiler from '../utils/compiler';
 import EventBus, { EventCallback } from './eventBus';
-import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
 
 interface BlockProps {
@@ -137,7 +137,7 @@ export default class Block {
     });
 
     const fragment = this._createDocumentElement('template');
-    fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs);
+    fragment.innerHTML = compiler(this.render(), propsAndStubs);
 
     Object.values(this.children).forEach(child => {
       const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);

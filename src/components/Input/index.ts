@@ -1,11 +1,14 @@
 import Block from "../../framework/block";
 import templ from './input.template.hbs?raw';
-import compiler from "../../utils/compiler";
 
 interface IInput {
-  type: string;
-  name: string;
-  class: string;
+  titleInp: string,
+  wrapInp: string,
+  input: {
+    type: string,
+    name: string,
+    value?: string,
+  }
 }
 
 export class Input extends Block {
@@ -14,6 +17,6 @@ export class Input extends Block {
   }
 
   render(): string {
-    return compiler(templ, this.props);
+    return templ;
   }
 }
