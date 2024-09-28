@@ -12,8 +12,20 @@ interface IInput {
 }
 
 export class Input extends Block {
+  private _inputElement = this._element?.querySelector(`input[name="${this.props.input.name}"]`) as HTMLInputElement;
+
   constructor(props: IInput) {
-    super({...props});
+    super({ ...props });
+  }
+
+  public getValue(): string {
+    return this._inputElement ? this._inputElement.value : '';
+  }
+
+  public clearValue(): void {
+    if (this._inputElement) {
+      this._inputElement.value = '';
+    }
   }
 
   render(): string {

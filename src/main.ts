@@ -70,6 +70,6 @@ const page_changePassword = new SettingsPage({
     new Button({ theme: 'blue', class: 'settings-btn', text: 'Save New Password' }),
   ]
 });
-
+console.log(page_auth);
 // Рендер страниц в DOM
-render('app', page_500);
+render('app', page_register);
