@@ -1,8 +1,8 @@
-const METHODS = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE',
+enum METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
 };
 
 function queryStringify(data: Record<string, any>): string {
@@ -16,7 +16,7 @@ function queryStringify(data: Record<string, any>): string {
   }, '?');
 }
 
-class HTTPTransport {
+export class HTTPTransport {
   get = (url: string, options: Record<string, any> = {}) => {
     return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
   };
@@ -33,7 +33,11 @@ class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: Record<string, any> = {}, timeout = 5000) => {
+  request = (
+    url: string,
+    options: { headers?: Record<string, string>, method?: METHODS, data?: any, timeout?: number } = {},
+    timeout: number = 5000
+  ): Promise<XMLHttpRequest> => {
     const { headers = {}, method, data } = options;
 
     return new Promise(function (resolve, reject) {
@@ -69,7 +73,7 @@ class HTTPTransport {
       if (isGet || !data) {
         xhr.send();
       } else {
-        xhr.send(data);
+        xhr.send(JSON.stringify(data));
       }
     });
   };
