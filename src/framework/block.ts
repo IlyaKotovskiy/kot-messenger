@@ -79,7 +79,7 @@ export default class Block {
   }
 
   protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-    return true;
+    return JSON.stringify(oldProps) !== JSON.stringify(newProps);
   }
   private _getChildrenPropsAndProps(propsAndChildren: BlockProps): {
     children: Record<string, Block>,

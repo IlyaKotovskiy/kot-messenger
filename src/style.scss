@@ -3,12 +3,15 @@
 :root {
   --black: #000;
   --black30per: rgba(0, 0, 0, 0.3);
+  --black40per: rgba(0, 0, 0, 0.4);
   --black50per: rgba(0, 0, 0, 0.5);
   --white: #fff;
   --white60per: rgba(255, 255, 255, 0.6);
   --white80per: rgba(255, 255, 255, 0.8);
   --greyc5: #C5C5C5;
   --greyd9: #D9D9D9;
+  --greyd916per: rgba(217, 217, 217, 0.16);
+  --blue: rgba(5, 0, 255, 0.5);
   --bg-blackout: rgba(14, 14, 14, 0.8);
 
   --transition: .1s ease-in-out;

@@ -6,6 +6,10 @@ import { AuthPage } from './pages/Аuthorization';
 import { Input } from './components/Input';
 import { Link } from './components/Link';
 import { Button } from './components/Button';
+import { ChatPage } from './pages/Chat';
+import { ChatItem } from './components/ChatItem';
+import { ChatList } from './components/ChatList';
+import { Message } from './components/Message';
 
 const username: string = 'Илья';
 
@@ -70,6 +74,41 @@ const page_changePassword = new SettingsPage({
     new Button({ theme: 'blue', class: 'settings-btn', text: 'Save New Password' }),
   ]
 });
-console.log(page_auth);
+const chatList = new ChatList({
+  chats: [
+    new ChatItem({
+      id: 1,
+      isRead: true,
+      online: true,
+      activeChat: true,
+      interlocutorName: 'Steven',
+      messages: [
+        new Message({id: 1, message: 'Welcome to the my Messanger :)', author: 'Steven'}),
+        new Message({id: 2, message: 'Hello, thanks', author: 'Me'}),
+        new Message({id: 3, message: 'It looks cool', author: 'Me'}),
+        new Message({id: 4, message: 'Yes, I am glad to hear that', author: 'Steven'}),
+      ]
+    }),
+    new ChatItem({
+      id: 2,
+      isRead: false,
+      online: true,
+      activeChat: false,
+      interlocutorName: 'John',
+      messages: [
+        new Message({id: 1, message: 'Welcome', author: 'John'}),
+        new Message({id: 2, message: 'Hello', author: 'Me'})
+      ]
+    }),
+  ]
+})
+const page_chat = new ChatPage({
+  chatList,
+  interlocutorName: chatList.getCurrentInterlocutorName(),
+  online: chatList.getOnline() ? 'online' : 'offline',
+  messages: chatList.getMessages(),
+});
+console.log(page_chat);
+
 // Рендер страниц в DOM
-render('app', page_register);
+render('app', page_chat);
