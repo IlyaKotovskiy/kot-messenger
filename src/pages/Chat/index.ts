@@ -1,6 +1,7 @@
 import './chat.scss';
 import Block from "../../framework/block";
 import templ from "./chat.template.hbs?raw";
+import { ChatList } from '../../components/ChatList';
 
 export class ChatPage extends Block {
   constructor(props: {}) {
@@ -16,14 +17,15 @@ export class ChatPage extends Block {
     e.preventDefault();
     const input = this._element?.querySelector('.chat-content__message-input') as HTMLInputElement;
     const messageContent = input.value.trim();
-    console.log(messageContent)
 
     if (messageContent) {
-      const activeChat = this.children.chatList.lists.chats.find(chat => chat.props.activeChat);
+      const chatList = this.children.chatList as ChatList;
+      const activeChat = chatList.getActiveChat();
+
       if (activeChat) {
         activeChat.sendMessage(messageContent);
       }
-      this.setProps({ messages: activeChat?.props.messages })
+      this.setProps({ messages: activeChat?.getMessages() })
       input.value = '';
     }
   }

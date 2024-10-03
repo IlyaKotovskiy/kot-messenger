@@ -19,7 +19,7 @@ export class ChatItem extends Block {
     });
 
     this.setProps({
-      lastMessage: this.getLastMessage()
+      lastMessage: this.getLastMessage(),
     });
   }
 
@@ -28,6 +28,18 @@ export class ChatItem extends Block {
       return this.lists.messages[this.lists.messages.length - 1].props.message
     }
     return 'No messages yet';
+  }
+
+  public getInterlocutorName(): string {
+    return this.props.interlocutorName;
+  }
+
+  public getOnline(): boolean {
+    return this.props.online ? this.props.online : false;
+  }
+
+  public getMessages(): Message[] {
+    return this.lists.messages;
   }
 
   public sendMessage(content: string): void {
