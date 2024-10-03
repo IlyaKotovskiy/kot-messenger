@@ -1,21 +1,14 @@
 <section class="settings">
-    <div class="settings-wrap">
-        <div class="settings-block">
-            <img class="avatar" src="/images/avatar.png" alt="Аватар">
-            <h1 class="greetings">Привет, {{name}}!</h1>
-            <form class="settings-form" method="post">
-                {{#each profile_settings}}
-                    <label class="settings-input-wrap">
-                        <p>{{this.title_input}}</p>
-                        <input type={{this.type_input}} name={{name_input}} value={{this.value_input}}>
-                    </label>
-                {{/each}}
-            </form>
-            <div class="settings-btns-wrap">
-                {{#each buttons_settings}}
-                    <button class="settings-btn {{this.theme}}">{{this.title}}</button>
-                {{/each}}
-            </div>
-        </div>
+  <div class="settings-wrap">
+    <div class="settings-block">
+      <img class="avatar" src="/images/avatar.png" alt="Аватар">
+      <h1 class="greetings">Привет, {{name}}!</h1>
+      <form class="settings-form" method="post">
+        {{{profile_settings}}}
+      </form>
+      <div class="settings-btns-wrap">
+        {{{buttons_settings}}}
+      </div>
     </div>
+  </div>
 </section>
