@@ -7,6 +7,9 @@ interface BlockProps {
 }
 
 export default class Block {
+  getActiveChat() {
+    throw new Error('Method not implemented.');
+  }
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -26,6 +29,8 @@ export default class Block {
 
   protected eventBus: () => EventBus;
 
+  protected _eventHandlers: Record<string, (e: Event) => void> = {};
+
   constructor(propsWithChildren: BlockProps = {}) {
     const eventBus = new EventBus();
     const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
@@ -39,10 +44,25 @@ export default class Block {
 
   private _addEvents(): void {
     const { events } = this.props;
+    this._removeEvents();
     if (events) {
       Object.keys(events).forEach(eventName => {
+        const handler = events[eventName];
         if (this._element) {
           this._element.addEventListener(eventName, events[eventName]);
+          this._eventHandlers[eventName] = handler;
+        }
+      });
+    }
+  }
+
+  private _removeEvents(): void {
+    if (this._element && this._eventHandlers) {
+      Object.keys(this._eventHandlers).forEach(eventName => {
+        const handler = this._eventHandlers[eventName];
+        if (handler) {
+          this._element?.removeEventListener(eventName, handler);
+          delete this._eventHandlers[eventName];
         }
       });
     }
@@ -126,8 +146,11 @@ export default class Block {
   }
   private _render(): void {
     console.log('Render');
+    this._removeEvents();
+
     const propsAndStubs = { ...this.props };
     const _tmpId = makeUUID();
+
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
@@ -168,6 +191,7 @@ export default class Block {
       this._element.replaceWith(newElement);
     }
     this._element = newElement;
+
     this._addEvents();
     this.addAttributes();
   }

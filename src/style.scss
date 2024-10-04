@@ -29,3 +29,20 @@ button,
 a {
   cursor: pointer;
 }
+
+.routing {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background-color: var(--white60per);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+  }
+}
