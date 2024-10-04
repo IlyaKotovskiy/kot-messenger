@@ -7,9 +7,6 @@ interface BlockProps {
 }
 
 export default class Block {
-  getActiveChat() {
-    throw new Error('Method not implemented.');
-  }
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
