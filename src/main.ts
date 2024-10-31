@@ -1,5 +1,4 @@
 import './style.scss';
-import { render } from './utils/renderDOM';
 import { ChatPage } from './pages/Chat';
 import { ChatItem } from './components/ChatItem';
 import { ChatList } from './components/ChatList';
@@ -10,19 +9,21 @@ import { Input } from './components/Input';
 import { Link } from './components/Link';
 import { Button } from './components/Button';
 import { SettingsPage } from './pages/Settings';
-import Block from './framework/block';
+import Router from './framework/Router';
+import { connect } from './framework/HOC';
 
 const username: string = 'Илья';
+const router = new Router('app');
 
-const page_404 = new ErrorPage({
+const props_page_404 = {
   status: 404,
   error: 'Страница не найдена'
-});
-const page_500 = new ErrorPage({
+}
+const props_page_500 = {
   status: 500,
   error: 'Внутренняя ошибка сервера'
-});
-const page_auth = new AuthPage({
+};
+const props_page_auth = {
   title: 'Вход',
   inputs: [
     new Input({ titleInp: 'Логин', wrapInp: 'input-wrap', input: { type: 'text', name: 'login' } }),
@@ -30,11 +31,11 @@ const page_auth = new AuthPage({
   ],
   submit_btn: new Button({ class: 'submit-btn', text: 'Авторизоваться' }),
   links: [
-    new Link({ text: 'Нет аккаунта?' }),
+    new Link({ text: 'Нет аккаунта?', to: '/reg' }),
     new Link({ text: 'Забыли пароль?' }),
   ],
-});
-const page_register = new AuthPage({
+};
+const props_page_register = {
   title: 'Регистрация',
   inputs: [
     new Input({ titleInp: 'Имя', wrapInp: 'input-wrap', input: { type: 'text', name: 'first_name' } }),
@@ -46,10 +47,10 @@ const page_register = new AuthPage({
   ],
   submit_btn: new Button({ class: 'submit-btn', text: 'Зарегистрироваться' }),
   links: [
-    new Link({ text: 'Уже есть аккаунт?' }),
+    new Link({ text: 'Уже есть аккаунт?', to: '/auth' }),
   ]
-});
-const page_settings = new SettingsPage({
+};
+const props_page_settings = {
   name: username,
   profile_settings: [
     new Input({ titleInp: 'Name: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'first_name', value: 'Ilya' } }),
@@ -60,21 +61,21 @@ const page_settings = new SettingsPage({
     new Input({ titleInp: 'Login: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'login', value: 'ilya.kot26' } }),
   ],
   buttons_settings: [
-    new Button({ theme: 'red', class: 'settings-btn', text: 'Quit' }),
-    new Button({ theme: 'blue', class: 'settings-btn', text: 'Change Password' }),
+    new Button({ theme: 'red', class: 'settings-btn', text: 'Quit', linkTo: '/' }),
+    new Button({ theme: 'blue', class: 'settings-btn', text: 'Change Password', linkTo: '/change-password' }),
   ]
-});
-const page_changePassword = new SettingsPage({
+};
+const props_page_changePassword = {
   name: username,
   profile_settings: [
     new Input({ titleInp: 'Old password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'oldPassword', value: 'oldpass' } }),
     new Input({ titleInp: 'New password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'newPassword', value: 'newsdpass' } }),
   ],
   buttons_settings: [
-    new Button({ theme: 'red', class: 'settings-btn', text: 'Back' }),
+    new Button({ theme: 'red', class: 'settings-btn', text: 'Back', linkTo: 'back' }),
     new Button({ theme: 'blue', class: 'settings-btn', text: 'Save New Password' }),
   ]
-});
+};
 const chatList = new ChatList({
   chats: [
     new ChatItem({
@@ -103,50 +104,24 @@ const chatList = new ChatList({
     }),
   ]
 })
-const page_chat = new ChatPage({
+const props_page_chat = {
   chatList,
   interlocutorName: chatList.getActiveChat()?.getInterlocutorName(),
   online: chatList.getActiveChat()?.getOnline() ? 'online' : 'offline',
   messages: chatList.getActiveChat()?.getMessages(),
-});
-
-// Простая навигация на уровне клиентской части
-
-// Навигация
-const routes: { [key: string]: Block } = {
-  '/': page_chat,
-  '/login': page_auth,
-  '/register': page_register,
-  '/settings': page_settings,
-  '/change-password': page_changePassword,
-  '/404': page_404,
-  '/500': page_500,
 };
 
-function renderPage(page: Block): void {
-  render('app', page);
-};
+const errorPage = connect(ErrorPage);
+const authPage = connect(AuthPage);
+const settingsPage = connect(SettingsPage);
+const chatPage = connect(ChatPage);
+router
+  .use('/404', errorPage(props_page_404))
+  .use('/500', errorPage(props_page_500))
+  .use('/auth', authPage(props_page_auth))
+  .use('/reg', authPage(props_page_register))
+  .use('/settings', settingsPage(props_page_settings))
+  .use('/change-password', settingsPage(props_page_changePassword))
+  .use('/', chatPage(props_page_chat))
 
-function handleRoute(): void {
-  const path = window.location.pathname;
-  const page = routes[path] || page_404;
-  renderPage(page);
-}
-
-function initNavigation(): void {
-  document.querySelectorAll('a.nav-link').forEach((link) => {
-    link.addEventListener('click', (e: Event) => {
-      const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
-      if (href) {
-        history.pushState(null, '', href);
-        handleRoute();
-      }
-    })
-  });
-};
-
-// Рендер начальной страницы
-handleRoute();
-initNavigation();
-
-window.addEventListener('popstate', handleRoute);
+  .start();
