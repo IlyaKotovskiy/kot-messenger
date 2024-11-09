@@ -4,6 +4,8 @@ import templ from './authorization.template.hbs?raw';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { Link } from '../../components/Link';
+import { AuthAPI } from './auth-api';
+import Router from '../../framework/Router';
 
 interface IFormData {
   login: string;
@@ -22,6 +24,8 @@ interface IProps {
 }
 
 export class AuthPage extends Block {
+  private authAPI: AuthAPI;
+  private router: Router;
   constructor(props: IProps) {
     super({
       events: {
@@ -29,6 +33,8 @@ export class AuthPage extends Block {
       },
       ...props,
     });
+    this.authAPI = new AuthAPI();
+    this.router = new Router('app');
   }
 
   // Валидация
@@ -90,7 +96,7 @@ export class AuthPage extends Block {
   }
 
   // Обработка данных формы и валидация
-  handleSubmitData(e: Event): void {
+  handleSubmitData = async (e: Event): Promise<void> => {
     e.preventDefault();
     let formData = {} as IFormData;
     let hasErrors = false;
@@ -114,11 +120,30 @@ export class AuthPage extends Block {
       });
 
       if (!hasErrors) {
-        console.log('Отправка данных: ', formData);
-        formData = {} as IFormData;
-        this.lists.inputs.forEach((inp) => inp.clearValue());
+        if (location.pathname !== '/reg') {
+          try {
+            await this.authAPI.login(formData);
+            this.clearForm(formData);
+            this.router.go('/chats');
+          } catch (err) {
+            console.error('Ошибка при авторизации: ', err.type);
+          }
+        } else {
+          try {
+            await this.authAPI.register(formData);
+            console.log('Отправка даных: ', formData)
+            this.clearForm(formData);
+          } catch (err) {
+            console.error('Ошибка при регистрации: ', err);
+          }
+        }
       }
     }
+  };
+
+  clearForm(formData: IFormData) {
+    formData = {} as IFormData;
+    this.lists.inputs.forEach((inp) => inp.clearValue());
   }
 
   protected render(): string {

@@ -37,10 +37,16 @@ export class HTTPTransport {
 
   request = (
     url: string,
-    options: { headers?: Record<string, string>, method?: METHODS, data?: any, timeout?: number } = {},
-    timeout: number = 5000
+    options: {
+      headers?: Record<string, string>,
+      method?: METHODS,
+      data?: any,
+      timeout?: number,
+      withCredentials?: boolean
+    } = {},
+    timeout: number = 60000
   ): Promise<XMLHttpRequest> => {
-    const { headers = {}, method, data } = options;
+    const { headers = {}, method, data, withCredentials = true } = options;
 
     return new Promise(function (resolve, reject) {
       if (!method) {
@@ -70,11 +76,13 @@ export class HTTPTransport {
       xhr.onerror = reject;
 
       xhr.timeout = timeout;
+      xhr.withCredentials = withCredentials;
       xhr.ontimeout = reject;
 
       if (isGet || !data) {
         xhr.send();
       } else {
+        xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(data));
       }
     });

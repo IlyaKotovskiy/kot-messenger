@@ -47,7 +47,7 @@ const props_page_register = {
   ],
   submit_btn: new Button({ class: 'submit-btn', text: 'Зарегистрироваться' }),
   links: [
-    new Link({ text: 'Уже есть аккаунт?', to: '/auth' }),
+    new Link({ text: 'Уже есть аккаунт?', to: '/' }),
   ]
 };
 const props_page_settings = {
@@ -90,18 +90,7 @@ const chatList = new ChatList({
         new Message({id: 3, message: 'It looks cool', author: 'Me'}),
         new Message({id: 4, message: 'Yes, I am glad to hear that', author: 'Steven'}),
       ]
-    }),
-    new ChatItem({
-      id: 2,
-      isRead: false,
-      online: true,
-      activeChat: false,
-      interlocutorName: 'John',
-      messages: [
-        new Message({id: 1, message: 'Welcome', author: 'John'}),
-        new Message({id: 2, message: 'Hello', author: 'Me'})
-      ]
-    }),
+    })
   ]
 })
 const props_page_chat = {
@@ -118,10 +107,10 @@ const chatPage = connect(ChatPage);
 router
   .use('/404', errorPage(props_page_404))
   .use('/500', errorPage(props_page_500))
-  .use('/auth', authPage(props_page_auth))
+  .use('/', authPage(props_page_auth))
   .use('/reg', authPage(props_page_register))
   .use('/settings', settingsPage(props_page_settings))
   .use('/change-password', settingsPage(props_page_changePassword))
-  .use('/', chatPage(props_page_chat))
+  .use('/chats', chatPage(props_page_chat))
 
   .start();
