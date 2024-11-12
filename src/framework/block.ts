@@ -145,7 +145,7 @@ export default class Block {
     return this._element;
   }
   private _render(): void {
-    console.log('Render');
+    // console.log('Render');
     this._removeEvents();
 
     const propsAndStubs = { ...this.props };
@@ -165,7 +165,7 @@ export default class Block {
     Object.values(this.children).forEach(child => {
       const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
       if (stub) {
-        console.log(stub);
+        // console.log(stub);
 
         stub.replaceWith(child.getContent());
       }
@@ -201,6 +201,9 @@ export default class Block {
   }
 
   public getContent(): HTMLElement {
+    if (!this._element) {
+      this._render();  // Пробуем создать элемент
+    }
     if (!this._element) {
       throw new Error('Element is not created');
     }

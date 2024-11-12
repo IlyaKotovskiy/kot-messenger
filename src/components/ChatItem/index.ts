@@ -8,7 +8,8 @@ interface IChatItem {
   online: boolean,
   activeChat: boolean,
   interlocutorName: string,
-  messages: Message[]
+  messages: Message[],
+  setActiveChatById: (id: number) => void;
 }
 
 export class ChatItem extends Block {
@@ -16,6 +17,9 @@ export class ChatItem extends Block {
     super({
       ...props,
       lastMessage: 'Loading...',
+      events: {
+        click: () => this.setActiveChat()
+      }
     });
 
     this.setProps({
@@ -49,6 +53,13 @@ export class ChatItem extends Block {
       messages: [...this.lists.messages, newMessage],
       lastMessage: this.getLastMessage()
     });
+    console.log(this.lists.messages);
+  }
+
+  public setActiveChat(): void {
+    if (!this.props.activeChat) {
+      this.props.setActiveChatById(this.props.id);
+    }
   }
 
   protected render(): string {

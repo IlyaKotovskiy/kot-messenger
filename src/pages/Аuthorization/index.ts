@@ -4,7 +4,7 @@ import templ from './authorization.template.hbs?raw';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { Link } from '../../components/Link';
-import { AuthAPI } from './auth-api';
+import AuthAPI from './authAPI';
 import Router from '../../framework/Router';
 
 interface IFormData {
@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export class AuthPage extends Block {
-  private authAPI: AuthAPI;
+  private authAPI = AuthAPI;
   private router: Router;
   constructor(props: IProps) {
     super({
@@ -33,12 +33,11 @@ export class AuthPage extends Block {
       },
       ...props,
     });
-    this.authAPI = new AuthAPI();
     this.router = new Router('app');
   }
 
   // Валидация
-  validateField(name: string, value: string): string | null {
+  public validateField(name: string, value: string): string | null {
     const nameRegex = /^[A-ZА-ЯЁ][a-zа-яё-]{1,}$/u;
     const loginRegex = /^(?!^\d+$)[A-Za-z0-9_-]{3,20}$/;
     const phoneRegex = /^\+?[0-9]{10,15}$/;
@@ -79,7 +78,7 @@ export class AuthPage extends Block {
 
 
   // Показ ошибки под полями
-  showError(input: Block, errorMessage: string | null): void {
+  public showError(input: Block, errorMessage: string | null): void {
     const errorElement = input.getContent().parentElement?.querySelector('.error') as HTMLElement;
     if (errorMessage) {
       if (errorElement) {
@@ -96,7 +95,7 @@ export class AuthPage extends Block {
   }
 
   // Обработка данных формы и валидация
-  handleSubmitData = async (e: Event): Promise<void> => {
+  public handleSubmitData = async (e: Event): Promise<void> => {
     e.preventDefault();
     let formData = {} as IFormData;
     let hasErrors = false;
@@ -122,15 +121,15 @@ export class AuthPage extends Block {
       if (!hasErrors) {
         if (location.pathname !== '/reg') {
           try {
-            await this.authAPI.login(formData);
+            await this.authAPI.signIn(formData);
             this.clearForm(formData);
             this.router.go('/chats');
           } catch (err) {
-            console.error('Ошибка при авторизации: ', err.type);
+            console.error('Ошибка при авторизации: ', err);
           }
         } else {
           try {
-            await this.authAPI.register(formData);
+            await this.authAPI.signUp(formData);
             console.log('Отправка даных: ', formData)
             this.clearForm(formData);
           } catch (err) {
@@ -141,7 +140,7 @@ export class AuthPage extends Block {
     }
   };
 
-  clearForm(formData: IFormData) {
+  public clearForm(formData: IFormData) {
     formData = {} as IFormData;
     this.lists.inputs.forEach((inp) => inp.clearValue());
   }

@@ -1,9 +1,4 @@
-enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-};
+import { HTTP_METHODS } from "../enum";
 
 type HTTPMethod = (url: string, options?: Record<string, any>) => Promise<unknown>
 
@@ -20,26 +15,26 @@ function queryStringify(data: Record<string, any>): string {
 
 export class HTTPTransport {
   get: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.GET }, options.timeout);
   };
 
   post: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.POST }, options.timeout);
   };
 
   put: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.PUT }, options.timeout);
   };
 
   delete: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.DELETE }, options.timeout);
   };
 
   request = (
     url: string,
     options: {
       headers?: Record<string, string>,
-      method?: METHODS,
+      method?: HTTP_METHODS,
       data?: any,
       timeout?: number,
       withCredentials?: boolean
@@ -55,7 +50,7 @@ export class HTTPTransport {
       }
 
       const xhr = new XMLHttpRequest();
-      const isGet = method === METHODS.GET;
+      const isGet = method === HTTP_METHODS.GET;
 
       xhr.open(
         method,

@@ -1,11 +1,5 @@
 import EventBus from "../framework/eventBus";
-
-enum WSTransportEvents {
-  Connected = 'connected',
-  Close = 'close',
-  Error = 'error',
-  Message = 'message'
-}
+import { WS_TransportEvents } from "../enum";
 
 export class WSTransport extends EventBus {
   private socket?: WebSocket;
@@ -36,9 +30,9 @@ export class WSTransport extends EventBus {
     this.setupPing();
 
     return new Promise((resolve, reject) => {
-      this.on(WSTransportEvents.Error, reject);
-      this.on(WSTransportEvents.Connected, () => {
-        this.off(WSTransportEvents.Error, reject);
+      this.on(WS_TransportEvents.Error, reject);
+      this.on(WS_TransportEvents.Connected, () => {
+        this.off(WS_TransportEvents.Error, reject);
         resolve();
       });
     });
@@ -54,7 +48,7 @@ export class WSTransport extends EventBus {
       this.send({ type: "ping" });
     }, this.pingIntervalTime);
 
-    this.on(WSTransportEvents.Close, () => {
+    this.on(WS_TransportEvents.Close, () => {
       clearInterval(this.pingInterval);
       this.pingInterval = undefined
     })
@@ -62,15 +56,15 @@ export class WSTransport extends EventBus {
 
   private subscribe(socket: WebSocket): void {
     socket.addEventListener('open', () => {
-      this.emit(WSTransportEvents.Connected)
+      this.emit(WS_TransportEvents.Connected)
     });
 
     socket.addEventListener('close', () => {
-      this.emit(WSTransportEvents.Close)
+      this.emit(WS_TransportEvents.Close)
     });
 
     socket.addEventListener('error', () => {
-      this.emit(WSTransportEvents.Error)
+      this.emit(WS_TransportEvents.Error)
     });
 
     socket.addEventListener('message', (message) => {
@@ -79,7 +73,7 @@ export class WSTransport extends EventBus {
         if (['pong', 'user connected'].includes(data?.type)) {
           return;
         }
-        this.emit(WSTransportEvents.Message, data)
+        this.emit(WS_TransportEvents.Message, data)
       } catch (e) {}
     });
   }

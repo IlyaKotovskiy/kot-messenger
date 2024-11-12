@@ -1,38 +1,22 @@
-const createStore = (reducer, initialState) => {
-  const subscribers = [];
-  let currentState = initialState;
+import { STORE_EVENTS } from "../enum";
+import { Indexed } from "../types/Indexed.t";
+import EventBus from "./eventBus";
 
-  return {
-    getState: () => currentState,
-    subscribe: fn => {
-      subscribers.push(fn);
-      fn(currentState);
-    },
-    dispatch: action => {
-      currentState = reducer(currentState, action);
-      subscribers.forEach(fn => fn(currentState));
-    },
-  };
-};
+class Store extends EventBus {
+  private state: Indexed = {};
 
-const deepCopy = object => JSON.parse(JSON.stringify(object));
-
-const reducer = (state, action) => {
-  const newState = deepCopy(state);
-  if (action.type === 'SET_TEXT') {
-    console.log('SET_TEXT');
-    newState.PageTitle = action.PageTitle;
-    return newState;
-  } else {
-    return state;
+  public getState(): {} {
+    return this.state;
   }
-};
 
+  public setState(nextState: {}): void {
+    const prevState = this.getState();
+    this.state = { ...this.state, ...nextState };
 
-const state = {
-  PageTitle: 'Initial state text',
-};
+    if (this.listeners[STORE_EVENTS.Updated]) {
+      this.emit(STORE_EVENTS.Updated, prevState, nextState);
+    }
+  }
+}
 
-const store = Object.freeze(createStore(reducer, state));
-
-export default store;
+export default new Store();

@@ -1,15 +1,21 @@
 import { BaseAPI } from "../../api/base-api";
 
-export class ChatApi extends BaseAPI {
+class ChatAPI extends BaseAPI {
   constructor(){
-    super();
+    super('/chats');
   }
 
   public async getChats(): Promise<any> {
-    return this.get('/chats');
+    return this.get('');
   }
 
-  async register(data: {}): Promise<any> {
-    return this.post('/auth/signup', { data });
+  public async createChat(title: {}): Promise<any> {
+    return await this.post('', title);
+  }
+
+  public async deleteChat(chatId: {}): Promise<any> {
+    return await this.delete('', chatId);
   }
 }
+
+export default new ChatAPI();

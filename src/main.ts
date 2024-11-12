@@ -78,19 +78,19 @@ const props_page_changePassword = {
 };
 const chatList = new ChatList({
   chats: [
-    new ChatItem({
-      id: 1,
-      isRead: true,
-      online: true,
-      activeChat: true,
-      interlocutorName: 'Steven',
-      messages: [
-        new Message({id: 1, message: 'Welcome to the my Messanger :)', author: 'Steven'}),
-        new Message({id: 2, message: 'Hello, thanks', author: 'Me'}),
-        new Message({id: 3, message: 'It looks cool', author: 'Me'}),
-        new Message({id: 4, message: 'Yes, I am glad to hear that', author: 'Steven'}),
-      ]
-    })
+    // new ChatItem({
+    //   id: 1,
+    //   isRead: true,
+    //   online: true,
+    //   activeChat: true,
+    //   interlocutorName: 'Steven',
+    //   messages: [
+    //     new Message({id: 1, message: 'Welcome to the my Messanger :)', author: 'Steven'}),
+    //     new Message({id: 2, message: 'Hello, thanks', author: 'Me'}),
+    //     new Message({id: 3, message: 'It looks cool', author: 'Me'}),
+    //     new Message({id: 4, message: 'Yes, I am glad to hear that', author: 'Steven'}),
+    //   ]
+    // })
   ]
 })
 const props_page_chat = {

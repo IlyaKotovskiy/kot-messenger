@@ -1,5 +1,6 @@
 import store from "./store";
 import Block from "./block";
+import { STORE_EVENTS } from "../enum";
 
 export function connect(Component: typeof Block) {
   return (props: any = {}) =>
@@ -7,7 +8,7 @@ export function connect(Component: typeof Block) {
       constructor() {
         super({ ...props, ...store.getState() });
 
-        store.subscribe(() => {
+        store.on(STORE_EVENTS.Updated, () => {
           console.log("Store обновился");
           this.setProps({ ...store.getState() });
         });

@@ -1,12 +1,5 @@
 import { HTTPTransport } from "../utils/xhr";
 
-export enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
-
 type RequestOptions = {
   headers?: Record<string, string>;
   data?: Record<string, any> | null;
@@ -15,26 +8,28 @@ type RequestOptions = {
 
 export class BaseAPI {
   private readonly baseUrl: string;
-  private readonly xhr: HTTPTransport;
+  private readonly HTTP: HTTPTransport;
+  private readonly path: string;
 
-  constructor() {
+  constructor(path: string) {
     this.baseUrl = 'https://ya-praktikum.tech/api/v2';
-    this.xhr = new HTTPTransport();
+    this.HTTP = new HTTPTransport();
+    this.path = path;
   }
 
   protected get<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-    return this.xhr.get(this.baseUrl + endpoint, options) as Promise<T>;
+    return this.HTTP.get(this.baseUrl + this.path + endpoint, options) as Promise<T>;
   }
 
   protected post<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-    return this.xhr.post(this.baseUrl + endpoint, options) as Promise<T>;
+    return this.HTTP.post(this.baseUrl + this.path + endpoint, options) as Promise<T>;
   }
 
   protected put<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-    return this.xhr.put(this.baseUrl + endpoint, options) as Promise<T>;
+    return this.HTTP.put(this.baseUrl + this.path + endpoint, options) as Promise<T>;
   }
 
   protected delete<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-    return this.xhr.delete(this.baseUrl + endpoint, options) as Promise<T>;
+    return this.HTTP.delete(this.baseUrl + this.path + endpoint, options) as Promise<T>;
   }
 }
