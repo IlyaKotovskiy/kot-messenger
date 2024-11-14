@@ -148,10 +148,13 @@ export class AuthPage extends Block {
     }
   };
 
-  public clearForm(formData: IFormData) {
-    formData = {} as IFormData;
+  public clearForm(formData: IFormData): void {
     this.lists.inputs.forEach((inp) => inp.clearValue());
+    Object.keys(formData).forEach(key => {
+      formData[key as keyof IFormData] = '';
+    });
   }
+  
 
   protected render(): string {
     return templ;

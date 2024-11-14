@@ -7,12 +7,6 @@ import { selectors } from "../../framework/selectors";
 import store, { IChat } from "../../framework/store";
 import ChatAPI from "./ChatAPI";
 
-interface IChatData {
-  id: number;
-  title: string;
-  lastMessage?: string;
-}
-
 class ChatController {
   private chatAPI = ChatAPI;
   private socket?: WS;

@@ -3,7 +3,7 @@ import { WS_TransportEvents } from "../enum";
 
 export class WSTransport extends EventBus {
   private socket?: WebSocket;
-  private pingInterval: ReturnType<typeof setInterval>;
+  private pingInterval: ReturnType<typeof setInterval> | undefined;
   private readonly pingIntervalTime: number = 30000;
   private url: string;
 

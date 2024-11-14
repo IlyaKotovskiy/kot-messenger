@@ -16,11 +16,11 @@ export interface IChat {
 }
 
 interface IState {
-  // chatsData?: {
-  //   activeChatId: number | null,
-  //   interLocutorName: string | null,
-  //   chats: IChat[]
-  // }
+  chatsData?: {
+    activeChatId?: number | null,
+    interLocutorName?: string | null,
+    chats?: IChat[]
+  }
   user: IUser | null;
   greetings: string | null;
   messages: IMessage[];

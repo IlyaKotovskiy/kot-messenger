@@ -33,7 +33,7 @@ class Route {
   }
 
   match(pathname: string): boolean {
-    return isEqual(pathname, this._pathname);
+    return isEqual({ path: pathname }, { path: this._pathname });
   }
 
   render(): void {
@@ -75,7 +75,8 @@ export default class Router {
 
   start(): void {
     window.onpopstate = ((event: PopStateEvent) => {
-      this._onRoute(event.currentTarget ? event.currentTarget.location.pathname : '/');
+      const pathname = (event.currentTarget as Window).location.pathname;
+      this._onRoute(event.currentTarget ? pathname : '/');
     }).bind(this);
 
     this._onRoute(window.location.pathname);

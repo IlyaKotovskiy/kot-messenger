@@ -10,7 +10,6 @@ import { SettingsPage } from './pages/Settings';
 import Router from './framework/Router';
 import { connect } from './framework/HOC';
 
-const username: string = 'Илья';
 const router = new Router('app');
 
 const props_page_404 = {

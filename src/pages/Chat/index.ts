@@ -1,5 +1,5 @@
 import "./chat.scss";
-import Block, { BlockProps } from "../../framework/block";
+import Block from "../../framework/block";
 import templ from "./chat.template.hbs?raw";
 import modalContent from './chatModal.template.hbs?raw';
 import { ChatList } from "../../components/ChatList";
@@ -57,10 +57,6 @@ export class ChatPage extends Block {
 
   protected componentDidMount(): void {
     ChatController.getChats(this.children.chatList as ChatList);
-  }
-
-  protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-    return true;
   }
 
   protected render(): string {

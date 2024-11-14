@@ -13,7 +13,11 @@ export class Link extends Block {
     super({
       ...props,
       events: {
-        click: () => router.go(props.to)
+        click: () => {
+          if (props.to) {
+            router.go(props.to)
+          }
+        }
       }
     });
   }

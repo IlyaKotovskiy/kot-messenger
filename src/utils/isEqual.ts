@@ -1,6 +1,4 @@
-type PlainObject<T = unknown> = {
-  [k in string]: T;
-};
+import { PlainObject } from "../types/PlainObject.t";
 
 function isArray(value: unknown): value is [] {
   return Array.isArray(value);
@@ -17,27 +15,26 @@ function isArrayOrObject(value: unknown): value is ([] | PlainObject) {
   return isPlainObject(value) || isArray(value);
 }
 
-export function isEqual(lhs: PlainObject, rhs: PlainObject) {
-  // Сравнение количества ключей объектов и массивов
-  if (Object.keys(lhs).length !== Object.keys(rhs).length) {
-    return false;
+export function isEqual(lhs: PlainObject | [], rhs: PlainObject | []): boolean {
+  if (isArray(lhs) && isArray(rhs)) {
+    if (lhs.length !== rhs.length) return false;
+
+    return lhs.every((value, index) => isEqual(value, rhs[index]));
   }
 
-  for (const [key, value] of Object.entries(lhs)) {
-    const rightValue = rhs[key];
-    if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-      // Здесь value и rightValue может быть только массивом или объектом
-      // И TypeScript это обрабатывает
-      if (isEqual(value, rightValue)) {
-        continue;
+  if (isPlainObject(lhs) && isPlainObject(rhs)) {
+    if (Object.keys(lhs).length !== Object.keys(rhs).length) return false;
+
+    for (const [key, value] of Object.entries(lhs)) {
+      const rightValue = rhs[key];
+      if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
+        if (!isEqual(value, rightValue)) return false;
+      } else if (value !== rightValue) {
+        return false;
       }
-      return false;
     }
-
-    if (value !== rightValue) {
-      return false;
-    }
+    return true;
   }
 
-  return true;
+  return false;
 }
