@@ -7,7 +7,7 @@ interface IInput {
   input: {
     type: string,
     name: string,
-    value?: string,
+    value?: string | null,
   }
 }
 

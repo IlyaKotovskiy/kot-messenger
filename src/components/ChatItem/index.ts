@@ -50,7 +50,7 @@ export class ChatItem extends Block {
     const newMessage = new Message({ id: Date.now(), message: content, author: 'Me' });
     this.lists.messages.push(newMessage);
     this.setProps({
-      messages: [...this.lists.messages, newMessage],
+      messages: [newMessage],
       lastMessage: this.getLastMessage()
     });
     console.log(this.lists.messages);

@@ -1,15 +1,43 @@
 import { STORE_EVENTS } from "../enum";
-import { Indexed } from "../types/Indexed.t";
+import { IMessage, IUser } from "../interfaces";
 import EventBus from "./eventBus";
 
-class Store extends EventBus {
-  private state: Indexed = {};
+export interface IChat {
+  id: number,
+  title: string,
+  avatar: null | string,
+  created_by: number,
+  unread_count: number,
+  last_message: {
+    user: IUser,
+    time: string,
+    content: string
+  }
+}
 
-  public getState(): {} {
+interface IState {
+  // chatsData?: {
+  //   activeChatId: number | null,
+  //   interLocutorName: string | null,
+  //   chats: IChat[]
+  // }
+  user: IUser | null;
+  greetings: string | null;
+  messages: IMessage[];
+}
+
+class Store extends EventBus {
+  private state: IState  = {
+    user: null,
+    greetings: '',
+    messages: [],
+  };
+
+  public getState(): IState {
     return this.state;
   }
 
-  public setState(nextState: {}): void {
+  public setState(nextState: Partial<IState>): void {
     const prevState = this.getState();
     this.state = { ...this.state, ...nextState };
 

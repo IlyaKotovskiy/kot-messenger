@@ -31,6 +31,18 @@ export enum WS_EVENTS {
   Close = 'close',
 }
 
+export const enum ERRORS_MESSAGES {
+  USER_IN_SYSTEM = 'User already in system',
+  USER_REQUIRED = 'User is required',
+  LOGOUT_FAILED = 'Failed to logout',
+  NETWORK = 'Network Error',
+  ABORTED = 'Request aborted',
+  TIMEOUT = 'Timeout exceeded',
+  ERROR = 'Error',
+  WS_ALREADY_CONNECTED = 'Connection is already established',
+  WS_NOT_CONNECTED = 'Connection is not established',
+}
+
 export enum STORE_EVENTS {
   Updated = 'updated'
 }

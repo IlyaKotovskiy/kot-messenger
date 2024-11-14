@@ -6,6 +6,7 @@ import { Button } from '../../components/Button';
 import { Link } from '../../components/Link';
 import AuthAPI from './authAPI';
 import Router from '../../framework/Router';
+import { HTTP_CODES } from '../../enum';
 
 interface IFormData {
   login: string;
@@ -121,9 +122,16 @@ export class AuthPage extends Block {
       if (!hasErrors) {
         if (location.pathname !== '/reg') {
           try {
-            await this.authAPI.signIn(formData);
-            this.clearForm(formData);
-            this.router.go('/chats');
+            await this.authAPI
+              .signIn(formData)
+              .then((res) => {
+                if (res.status !== HTTP_CODES.UNAUTHORIZED) {
+                  this.clearForm(formData);
+                  this.router.go('/chats');
+                } else {
+                  throw new Error('Неверные данные')
+                }
+              });
           } catch (err) {
             console.error('Ошибка при авторизации: ', err);
           }

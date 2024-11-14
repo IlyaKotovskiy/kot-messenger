@@ -1,9 +1,12 @@
 import Block from "../../framework/block";
+import { selectors } from "../../framework/selectors";
+import store from "../../framework/store";
+import ChatController from "../../pages/Chat/ChatController";
 import { ChatItem } from "../ChatItem";
-import templ from './chatList.template.hbs?raw';
+import templ from "./chatList.template.hbs?raw";
 
 interface IChatList {
-  chats: ChatItem[]
+  chats: ChatItem[];
 }
 
 export class ChatList extends Block {
@@ -13,15 +16,29 @@ export class ChatList extends Block {
     super({ ...props });
   }
 
-  public setActiveChatById(chatId: number): void {
-    if (this.activeChatId === chatId) return;
+  public async setActiveChatById(chatId: number): Promise<void> {
+    try {
+      const userId = selectors.getUser()?.id;
 
-    this.lists.chats.forEach(chat => {
-      chat.setProps({ activeChat: chat.props.id === chatId });
-    });
+      if (userId) {
+        await ChatController.connectToChat(userId, chatId)
+      }
+      store.setState({
+        chatsData: {
+          activeChatId: chatId,
+        },
+      });
+      if (this.activeChatId === chatId) return;
 
-    this.activeChatId = chatId;
-    this.setProps({ chats: this.lists.chats });
+      this.lists.chats.forEach((chat) => {
+        chat.setProps({ activeChat: chat.props.id === chatId });
+      });
+
+      this.activeChatId = chatId;
+      this.setProps({ chats: this.lists.chats });
+    } catch (err) {
+      throw new Error('Возникла ошибка при ')
+    }
   }
 
   public addChat(chat: ChatItem): void {
@@ -30,7 +47,7 @@ export class ChatList extends Block {
   }
 
   public getActiveChat(): ChatItem | undefined {
-    return this.lists.chats.find(chat => chat.props.activeChat);
+    return this.lists.chats.find((chat) => chat.props.activeChat);
   }
 
   protected render(): string {

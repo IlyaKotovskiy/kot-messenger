@@ -1,4 +1,5 @@
 import { HTTPTransport } from "../utils/xhr";
+import { BASE_URL } from "./url-api";
 
 type RequestOptions = {
   headers?: Record<string, string>;
@@ -12,7 +13,7 @@ export class BaseAPI {
   private readonly path: string;
 
   constructor(path: string) {
-    this.baseUrl = 'https://ya-praktikum.tech/api/v2';
+    this.baseUrl = BASE_URL;
     this.HTTP = new HTTPTransport();
     this.path = path;
   }

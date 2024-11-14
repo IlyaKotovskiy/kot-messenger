@@ -1,4 +1,5 @@
 import { BaseAPI } from "../../api/base-api";
+import { ApiResponse } from "../../interfaces";
 
 class ChatAPI extends BaseAPI {
   constructor(){
@@ -9,12 +10,16 @@ class ChatAPI extends BaseAPI {
     return this.get('');
   }
 
-  public async createChat(title: {}): Promise<any> {
-    return await this.post('', title);
+  public async createChat(data: {}): Promise<any> {
+    return await this.post('', { data });
   }
 
-  public async deleteChat(chatId: {}): Promise<any> {
-    return await this.delete('', chatId);
+  public async deleteChat(data: {}): Promise<any> {
+    return await this.delete('', { data });
+  }
+
+  public async getToken(chatId: number): Promise<ApiResponse> {
+    return await this.post(`/token/${chatId}`);
   }
 }
 

@@ -2,7 +2,7 @@ import compiler from '../utils/compiler';
 import EventBus, { EventCallback } from './eventBus';
 import { v4 as makeUUID } from 'uuid';
 
-interface BlockProps {
+export interface BlockProps {
   [key: string]: any;
 }
 
@@ -36,7 +36,7 @@ export default class Block {
     const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
     this.props = this._makePropsProxy({ ...props });
     this.children = children;
-    this.lists = lists;
+    this.lists = this._makePropsProxy({ ...lists });;
     this.eventBus = () => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
@@ -141,6 +141,14 @@ export default class Block {
     Object.assign(this.props, nextProps);
   };
 
+  public setLists = (nextProps: any): void => {
+    if (!nextProps) {
+      return;
+    }
+
+    Object.assign(this.lists, nextProps);
+  };
+
   get element(): HTMLElement | null {
     return this._element;
   }
@@ -201,9 +209,6 @@ export default class Block {
   }
 
   public getContent(): HTMLElement {
-    if (!this._element) {
-      this._render();  // Пробуем создать элемент
-    }
     if (!this._element) {
       throw new Error('Element is not created');
     }

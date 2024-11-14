@@ -1,8 +1,6 @@
 import './style.scss';
 import { ChatPage } from './pages/Chat';
-import { ChatItem } from './components/ChatItem';
 import { ChatList } from './components/ChatList';
-import { Message } from './components/Message';
 import { ErrorPage } from './pages/Error';
 import { AuthPage } from './pages/Аuthorization';
 import { Input } from './components/Input';
@@ -51,14 +49,14 @@ const props_page_register = {
   ]
 };
 const props_page_settings = {
-  name: username,
+  name: '',
   profile_settings: [
-    new Input({ titleInp: 'Name: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'first_name', value: 'Ilya' } }),
-    new Input({ titleInp: 'Surname: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'second_name', value: 'Kotovskiy' } }),
-    new Input({ titleInp: 'Nickname: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'display_name', value: 'ilya.kot' } }),
-    new Input({ titleInp: 'Email: ', wrapInp: 'settings-input-wrap', input: { type: 'email', name: 'email', value: 'ilya.kot.web@gmail.com' } }),
-    new Input({ titleInp: 'Phone: ', wrapInp: 'settings-input-wrap', input: { type: 'tel', name: 'phone', value: '+79964181340' } }),
-    new Input({ titleInp: 'Login: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'login', value: 'ilya.kot26' } }),
+    new Input({ titleInp: 'Name: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'first_name', value: '' } }),
+    new Input({ titleInp: 'Surname: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'second_name', value: '' } }),
+    new Input({ titleInp: 'Nickname: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'display_name', value: '' } }),
+    new Input({ titleInp: 'Email: ', wrapInp: 'settings-input-wrap', input: { type: 'email', name: 'email', value: '' } }),
+    new Input({ titleInp: 'Phone: ', wrapInp: 'settings-input-wrap', input: { type: 'tel', name: 'phone', value: '' } }),
+    new Input({ titleInp: 'Login: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'login', value: '' } }),
   ],
   buttons_settings: [
     new Button({ theme: 'red', class: 'settings-btn', text: 'Quit', linkTo: '/' }),
@@ -66,10 +64,10 @@ const props_page_settings = {
   ]
 };
 const props_page_changePassword = {
-  name: username,
+  name: '',
   profile_settings: [
-    new Input({ titleInp: 'Old password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'oldPassword', value: 'oldpass' } }),
-    new Input({ titleInp: 'New password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'newPassword', value: 'newsdpass' } }),
+    new Input({ titleInp: 'Old password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'oldPassword', value: '' } }),
+    new Input({ titleInp: 'New password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'newPassword', value: '' } }),
   ],
   buttons_settings: [
     new Button({ theme: 'red', class: 'settings-btn', text: 'Back', linkTo: 'back' }),
@@ -96,7 +94,7 @@ const chatList = new ChatList({
 const props_page_chat = {
   chatList,
   interlocutorName: chatList.getActiveChat()?.getInterlocutorName(),
-  online: chatList.getActiveChat()?.getOnline() ? 'online' : 'offline',
+  online: 'online',
   messages: chatList.getActiveChat()?.getMessages(),
 };
 
