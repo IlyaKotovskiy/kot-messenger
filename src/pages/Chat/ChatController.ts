@@ -13,8 +13,18 @@ class ChatController {
   public chats: IChat[];
 
   public async connectToChat(userId: number, chatId: number): Promise<void> {
-    const { token } = await ChatAPI.getToken(chatId);
+    const tokenResponse = await ChatAPI.getToken(chatId);
+    const { token } = typeof tokenResponse.response === 'string' 
+      ? JSON.parse(tokenResponse.response) 
+      : null;
+
+    if (!token) {
+      throw new Error('Не удалось получить токен для чата');
+    }
     const url = `${WS_URL}${userId}/${chatId}/${token}`;
+
+    console.log('Токен в ChatController: ', token);
+    
     
     this.socket = new WS(url);
     await this.socket.connect();

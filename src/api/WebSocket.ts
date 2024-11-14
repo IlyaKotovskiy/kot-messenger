@@ -78,11 +78,15 @@ export default class WS extends EventBus {
     });
 
     socket.addEventListener('message', (message) => {
-      const data = JSON.parse(message.data);
-      if (Array.isArray(data)) {
-        this.emit(WS_EVENTS.Message, data);
-      } else if (!['pong', 'user connected'].includes(data?.type)) {
-        this.emit(WS_EVENTS.Message, data);
+      try {
+        const data = JSON.parse(message.data);
+        if (Array.isArray(data)) {
+          this.emit(WS_EVENTS.Message, data);
+        } else if (!['pong', 'user connected'].includes(data?.type)) {
+          this.emit(WS_EVENTS.Message, data);
+        }
+      } catch (error) {
+        console.warn("Получено сообщение, не являющееся JSON:", message.data);
       }
     });
   }
