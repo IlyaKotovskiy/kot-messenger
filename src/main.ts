@@ -28,7 +28,7 @@ const props_page_auth = {
   ],
   submit_btn: new Button({ class: 'submit-btn', text: 'Авторизоваться' }),
   links: [
-    new Link({ text: 'Нет аккаунта?', to: '/reg' }),
+    new Link({ text: 'Нет аккаунта?', to: '/sign-up' }),
     new Link({ text: 'Забыли пароль?' }),
   ],
 };
@@ -105,9 +105,9 @@ router
   .use('/404', errorPage(props_page_404))
   .use('/500', errorPage(props_page_500))
   .use('/', authPage(props_page_auth))
-  .use('/reg', authPage(props_page_register))
+  .use('/sign-up', authPage(props_page_register))
   .use('/settings', settingsPage(props_page_settings))
   .use('/change-password', settingsPage(props_page_changePassword))
-  .use('/chats', chatPage(props_page_chat))
+  .use('/messenger', chatPage(props_page_chat))
 
   .start();

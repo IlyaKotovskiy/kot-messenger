@@ -120,14 +120,14 @@ export class AuthPage extends Block {
       });
 
       if (!hasErrors) {
-        if (location.pathname !== '/reg') {
+        if (location.pathname !== '/sign-up') {
           try {
             await this.authAPI
               .signIn(formData)
               .then((res) => {
                 if (res.status !== HTTP_CODES.UNAUTHORIZED) {
                   this.clearForm(formData);
-                  this.router.go('/chats');
+                  this.router.go('/messenger');
                 } else {
                   throw new Error('Неверные данные')
                 }

@@ -37,7 +37,7 @@ export class ChatList extends Block {
       this.activeChatId = chatId;
       this.setProps({ chats: this.lists.chats });
     } catch (err) {
-      throw new Error('Возникла ошибка при ')
+      throw new Error('Возникла ошибка при подключении WS к чату')
     }
   }
 
