@@ -11,7 +11,7 @@ interface IChatList {
 }
 
 export class ChatList extends Block {
-  public activeChatId: number | null = null;
+  private activeChatId: number | null = null;
   private router: Router;
 
   constructor(props: IChatList) {
@@ -69,6 +69,10 @@ export class ChatList extends Block {
 
   public getActiveChat(): ChatItem | undefined {
     return this.lists.chats.find((chat) => chat.props.activeChat);
+  }
+
+  public getActiveChatBool(): number | null {
+    return this.activeChatId;
   }
 
   protected render(): string {

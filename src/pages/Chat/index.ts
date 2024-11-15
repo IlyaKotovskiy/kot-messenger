@@ -49,7 +49,6 @@ export class ChatPage extends Block {
         this.setLists({ 
           messages: [...this.lists.messages, message]
         })
-        // activeChat.sendMessage(messageContent);
         ChatController.sendMessage(messageContent);
         console.log("Message sent:", messageContent);
         input.value = "";
@@ -60,8 +59,7 @@ export class ChatPage extends Block {
   }
 
   public isActiveChat(): boolean {
-    if (this.chatList.activeChatId) return true
-    else return false;
+    return !!this.chatList?.getActiveChatBool();
   }
 
   public click(e: Event): void {
