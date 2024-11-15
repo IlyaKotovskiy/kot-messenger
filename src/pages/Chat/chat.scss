@@ -8,6 +8,20 @@
 
 // Chat List
 
+.chat-settings {
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  background-color: var(--white60per);
+  border-radius: 50%;
+  margin-left: 28px;
+  background-color: var(--greyd9);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .chat-list {
   background-color: var(--bg-blackout);
   position: relative;

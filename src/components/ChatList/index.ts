@@ -1,4 +1,5 @@
 import Block from "../../framework/block";
+import Router from "../../framework/Router";
 import { selectors } from "../../framework/selectors";
 import store from "../../framework/store";
 import ChatController from "../../pages/Chat/ChatController";
@@ -11,9 +12,22 @@ interface IChatList {
 
 export class ChatList extends Block {
   private activeChatId: number | null = null;
+  private router: Router;
 
   constructor(props: IChatList) {
-    super({ ...props });
+    super({
+      ...props,
+      events: {
+        click: (e: Event) => this.handleClickSettings(e)
+      }
+    });
+    this.router = new Router('app');
+  }
+
+  public handleClickSettings(e: Event): void {
+    if (e.target === document.querySelector('.chat-text')) {
+      this.router.go('/settings')
+    }
   }
 
   public async setActiveChatById(chatId: number): Promise<void> {
