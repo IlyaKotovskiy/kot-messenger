@@ -13,11 +13,7 @@ class SettingsController {
         user: data,
         greetings: `Hello, ${data.first_name}!`,
       });
-
-      console.log(store.getState());
       
-
-      // Пройтись по ключам данных пользователя и установить значение для каждого input
       Object.entries(data).forEach(([key, value]) => {
         const inputElement = document.querySelector(`input[name="${key}"]`) as HTMLInputElement;
         
@@ -31,68 +27,53 @@ class SettingsController {
     }
   }
 
-  public async updateUserData(event: Event): Promise<void> {
-    const target = event.target as HTMLInputElement;
-    const name = target.name;
-    const value = target.value;
+  public async updateUserData(): Promise<void> {
+    const inputs = document.querySelectorAll('input:not([type="password"])') as NodeListOf<HTMLInputElement>;
 
-    const updatedData = {
-      ...store.getState().user,
-      [name]: value
-    };
+    const updatedData: Record<string, string> = {};
+    inputs.forEach((input) => {
+      const { name, value } = input;
+      if (name) {
+        updatedData[name] = value;
+      }
+    });
 
     try {
       await settingsAPI.updateUser(updatedData);
-      
+
       store.setState({
         user: updatedData,
         greetings: `Hello, ${updatedData.first_name}!`
       });
-      
-      console.log("Данные обновлены:", updatedData);
+
+      console.log("Данные успешно обновлены:", updatedData);
       this.updateGreeting();
     } catch (err) {
       console.error("Ошибка при обновлении данных:", err);
     }
   }
 
-  public async updatePassword(e: Event): Promise<void> {
-    const target = e.target as HTMLInputElement;
-    
-    if (target && target.type === 'password') {
-      // Получаем значения для старого, нового и подтвержденного паролей
-      const oldPasswordInput = document.querySelector('input[name="oldPassword"]') as HTMLInputElement;
-      const newPasswordInput = document.querySelector('input[name="newPassword"]') as HTMLInputElement;
-  
-      if (!oldPasswordInput || !newPasswordInput) {
-        console.error("Не удалось найти один из элементов пароля.");
-        return;
-      }
-  
-      const oldPassword = oldPasswordInput.value;
-      const newPassword = newPasswordInput.value;
-  
-      // Проверка, что новый пароль совпадает с подтвержденным и отличается от старого
-      if (newPassword && oldPassword !== newPassword) {
-        try {
-          // Здесь вызывается API для обновления пароля
-          await settingsAPI.updatePassword({ oldPassword, newPassword });
-          console.log("Пароль успешно обновлен");
-        } catch (err) {
-          console.error("Ошибка при обновлении пароля:", err);
-        }
-      } else {
-        console.error("Новый пароль и подтвержденный пароль не совпадают или совпадают со старым паролем.");
-      }
-    }
-  }
+  public async updatePassword(): Promise<void> {
+    const oldPasswordInput = document.querySelector('input[name="oldPassword"]') as HTMLInputElement;
+    const newPasswordInput = document.querySelector('input[name="newPassword"]') as HTMLInputElement;
 
-  public updateData(e: Event): void {
-    const target = e.target as HTMLInputElement;
-    if (target && target.type !== 'password') {
-      this.updateUserData(e);
+    if (!oldPasswordInput || !newPasswordInput) {
+      console.error("Не удалось найти один из элементов пароля.");
+      return;
+    }
+
+    const oldPassword = oldPasswordInput.value;
+    const newPassword = newPasswordInput.value;
+
+    if (newPassword && oldPassword !== newPassword) {
+      try {
+        await settingsAPI.updatePassword({ oldPassword, newPassword });
+        console.log("Пароль успешно обновлен");
+      } catch (err) {
+        console.error("Ошибка при обновлении пароля:", err);
+      }
     } else {
-      this.updatePassword(e);
+      console.error("Новый пароль и подтвержденный пароль не совпадают или совпадают со старым паролем.");
     }
   }
 
@@ -106,12 +87,18 @@ class SettingsController {
     }
   }
 
-  public logout(e: Event): void {
+  public async handleClick(e: Event): Promise<void> {
     const target = e.target as HTMLElement;
-    if (target.tagName === 'BUTTON' && target.textContent?.trim() === 'Quit') {
-      authAPI.logout();
+
+    if (target.textContent?.trim() === 'Save new Data') {
+      await this.updateUserData();
     }
-  
+    if (target.textContent?.trim() === 'Save New Password') {
+      await this.updatePassword();
+    }
+    if (target.textContent?.trim() === 'Quit') {
+      authAPI.logout()
+    }
   }
 }
 

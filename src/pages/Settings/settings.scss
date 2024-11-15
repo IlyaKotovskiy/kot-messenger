@@ -77,6 +77,12 @@
   gap: 8px;
 }
 
+.settings-btns-wrap > .settings-btn {
+  &:nth-child(1) {
+    grid-column: span 2;
+  }
+}
+
 .settings-btn {
   background-color: transparent;
   outline: none;

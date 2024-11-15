@@ -58,6 +58,7 @@ const props_page_settings = {
     new Input({ titleInp: 'Login: ', wrapInp: 'settings-input-wrap', input: { type: 'text', name: 'login', value: '' } }),
   ],
   buttons_settings: [
+    new Button({ theme: 'blue', class: 'settings-btn', text: 'Save new Data' }),
     new Button({ theme: 'red', class: 'settings-btn', text: 'Quit', linkTo: '/' }),
     new Button({ theme: 'blue', class: 'settings-btn', text: 'Change Password', linkTo: '/change-password' }),
   ]
@@ -69,8 +70,8 @@ const props_page_changePassword = {
     new Input({ titleInp: 'New password: ', wrapInp: 'settings-input-wrap', input: { type: 'password', name: 'newPassword', value: '' } }),
   ],
   buttons_settings: [
-    new Button({ theme: 'red', class: 'settings-btn', text: 'Back', linkTo: 'back' }),
     new Button({ theme: 'blue', class: 'settings-btn', text: 'Save New Password' }),
+    new Button({ theme: 'red', class: 'settings-btn', text: 'Back', linkTo: 'back' }),
   ]
 };
 const chatList = new ChatList({
