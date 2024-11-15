@@ -19,8 +19,6 @@ class ChatAPI extends BaseAPI {
   }
 
   public async getToken(chatId: {}): Promise<ApiResponse> {
-    console.log('Токен из ChatAPI: ', chatId);
-    
     return await this.post(`/token/${chatId}`);
   }
 }

@@ -18,7 +18,7 @@ export interface IChat {
 interface IState {
   chatsData?: {
     activeChatId?: number | null,
-    interLocutorName?: string | null,
+    interlocutorName?: string | null,
     chats?: IChat[]
   }
   user: IUser | null;

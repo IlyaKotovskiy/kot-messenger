@@ -5,6 +5,8 @@ import modalContent from './chatModal.template.hbs?raw';
 import { ChatList } from "../../components/ChatList";
 import ChatController from "./ChatController";
 import { Modal } from "../../components/Modal";
+import store from "../../framework/store";
+import { STORE_EVENTS } from "../../enum";
 
 export class ChatPage extends Block {
   private chatList: ChatList;
@@ -17,6 +19,7 @@ export class ChatPage extends Block {
         click: (e: Event) => this.click(e)
       },
     });
+    store.on(STORE_EVENTS.Updated, this.handleStoreUpdate.bind(this));
     this.chatList = this.children.chatList as ChatList;
     this.modal = new Modal({
       title: 'Добавить новый чат',
@@ -25,26 +28,35 @@ export class ChatPage extends Block {
     this.children.modal = this.modal;
   }
 
+  private handleStoreUpdate(prevState: any, nextState: any): void {
+    if (prevState.messages !== nextState.messages) {
+      this.setProps({ messages: nextState.messages });
+    }
+  }
+
   public handleSendMessage(e: Event): void {
     e.preventDefault();
+  
     const input = this._element?.querySelector(
       ".chat-content__message-input"
     ) as HTMLInputElement;
     const messageContent = input.value.trim();
+    const activeChat = this.chatList.getActiveChat();
+    const message = ChatController.createMessage(messageContent);
 
-    if (messageContent) {
-      const activeChat = this.chatList.getActiveChat();
-
-      if (activeChat) {
+    if (activeChat && messageContent) {
+      try {
+        console.log(message);
+        this.setLists({ 
+          messages: [...this.lists.messages, message]
+         })
         activeChat.sendMessage(messageContent);
+        ChatController.sendMessage(messageContent);
+        console.log("Message sent:", messageContent);
+        input.value = "";
+      } catch (err) {
+        console.error(err.message);
       }
-      this.setLists({ messages: activeChat?.getMessages() });
-      console.log(activeChat?.getMessages());
-      
-      console.log("Сообщение: ", messageContent);
-
-      input.value = "";
-      console.log(this);
     }
   }
 

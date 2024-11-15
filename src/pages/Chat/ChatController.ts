@@ -2,6 +2,7 @@ import { WS_URL } from "../../api/url-api";
 import WS from "../../api/WebSocket";
 import { ChatItem } from "../../components/ChatItem";
 import { ChatList } from "../../components/ChatList";
+import { Message } from "../../components/Message";
 import { WS_EVENTS } from "../../enum";
 import { selectors } from "../../framework/selectors";
 import store, { IChat } from "../../framework/store";
@@ -32,6 +33,7 @@ class ChatController {
 
     this.socket.on(WS_EVENTS.Message, (data) => {
       const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+
       if (Array.isArray(parsedData)) {
         selectors.setMessages(parsedData);
         console.log('Old messages are received', parsedData);
@@ -103,6 +105,32 @@ class ChatController {
     } catch (err) {
       throw new Error('Что-то пошло не так при создании чата.')
     }
+  }
+
+  public createMessage(content: string): Message {
+    return new Message({
+      id: Date.now(),
+      message: content,
+      author: 'Me'
+    });
+  }
+
+  public sendMessage(content: string): void {
+    if (!this.socket) {
+      throw new Error('Socket is not connected');
+    }
+  
+    if (!content.trim()) {
+      throw new Error('Message content cannot be empty');
+    }
+  
+    const message = {
+      content,
+      type: 'message',
+    };
+  
+    this.socket.send(message);
+    console.log('Message sent:', message);
   }
 }
 

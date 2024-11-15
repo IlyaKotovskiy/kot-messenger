@@ -31,17 +31,24 @@ export class ChatList extends Block {
   }
 
   public async setActiveChatById(chatId: number): Promise<void> {
-    try {
+    try {      
       const userId = selectors.getUser()?.id;
 
       if (userId) {
         await ChatController.connectToChat(userId, chatId)
       }
+      const activeChat = this.lists.chats.find(chat => chat.props.id === chatId);
+
+      if (!activeChat) {
+        throw new Error(`Чат с id ${chatId} не найден`);
+      }
+
       store.setState({
         chatsData: {
+          interlocutorName: activeChat.props.interlocutorName,
           activeChatId: chatId,
         },
-      });
+      });      
       if (this.activeChatId === chatId) return;
 
       this.lists.chats.forEach((chat) => {

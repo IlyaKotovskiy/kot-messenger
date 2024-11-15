@@ -92,9 +92,9 @@ const chatList = new ChatList({
 })
 const props_page_chat = {
   chatList,
-  interlocutorName: chatList.getActiveChat()?.getInterlocutorName(),
+  interlocutorName: '',
   online: 'online',
-  messages: chatList.getActiveChat()?.getMessages(),
+  messages: '',
 };
 
 const errorPage = connect(ErrorPage);

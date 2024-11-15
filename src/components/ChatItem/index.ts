@@ -1,4 +1,5 @@
 import Block from "../../framework/block";
+import ChatController from "../../pages/Chat/ChatController";
 import { Message } from "../Message";
 import templ from './chatItem.template.hbs?raw';
 
@@ -34,29 +35,23 @@ export class ChatItem extends Block {
     return 'No messages yet';
   }
 
-  public getInterlocutorName(): string {
-    return this.props.interlocutorName;
-  }
-
   public getOnline(): boolean {
     return this.props.online ? this.props.online : false;
   }
 
-  public getMessages(): Message[] {
-    return this.lists.messages;
-  }
+  // public getMessages(): Message[] {
+  //   return this.lists.messages;
+  // }
 
   public sendMessage(content: string): void {
-    const newMessage = new Message({ id: Date.now(), message: content, author: 'Me' });
+    const newMessage = ChatController.createMessage(content);
     this.lists.messages.push(newMessage);
     this.setProps({
-      messages: [newMessage],
       lastMessage: this.getLastMessage()
     });
-    console.log(this.lists.messages);
   }
 
-  public setActiveChat(): void {
+  public setActiveChat(): void {    
     if (!this.props.activeChat) {
       this.props.setActiveChatById(this.props.id);
     }
