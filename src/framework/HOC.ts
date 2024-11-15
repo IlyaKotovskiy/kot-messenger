@@ -11,6 +11,9 @@ export function connect(Component: typeof Block) {
         store.on(STORE_EVENTS.Updated, () => {
           console.log("Store обновился: ", store.getState());
           this.setProps({ ...store.getState() });
+          if (store.getState().messages && store.getState().messages.length) {
+            this.setLists({ messages: store.getState().messages })
+          }
         });
       }
     };

@@ -120,7 +120,7 @@ class ChatController {
     }
   }
 
-  public createMessage(content: string, idMessage?: number): Message {
+  public createMessage(content: string, idMessage?: number): any {
     return new Message({
       id: idMessage ? idMessage : Date.now(),
       message: content,
@@ -143,6 +143,11 @@ class ChatController {
     };
   
     this.socket.send(message);
+    const newMsg = this.createMessage(content);
+    const currentMessages = store.getState().messages || [];
+    store.setState({
+      messages: {...currentMessages, newMsg}
+    });
     console.log('Message sent:', message);
   }
 }

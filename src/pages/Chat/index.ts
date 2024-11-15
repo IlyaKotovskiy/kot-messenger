@@ -49,7 +49,7 @@ export class ChatPage extends Block {
         this.setLists({ 
           messages: [...this.lists.messages, message]
         })
-        activeChat.sendMessage(messageContent);
+        // activeChat.sendMessage(messageContent);
         ChatController.sendMessage(messageContent);
         console.log("Message sent:", messageContent);
         input.value = "";

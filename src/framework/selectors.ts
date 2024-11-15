@@ -1,4 +1,5 @@
 import { IMessage, IUser } from "../interfaces";
+import ChatController from "../pages/Chat/ChatController";
 import store from "./store";
 
 class Selectors {
@@ -10,9 +11,10 @@ class Selectors {
     store.setState({ user });
   }
 
-  public setMessages(messages: IMessage[]): void {
+  public setMessages(messages: string[]): void {
     const messageItems = messages.reverse();
-    store.setState({ messages: messageItems });
+    let msgs = messageItems.map((item: any) => ChatController.createMessage(item.content))
+    store.setState({ messages: msgs });
   }
 
   public addMessage(message: IMessage): void {

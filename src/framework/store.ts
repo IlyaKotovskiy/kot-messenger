@@ -37,7 +37,7 @@ class Store extends EventBus {
     return this.state;
   }
 
-  public setState(nextState: Partial<IState>): void {
+  public setState(nextState: Partial<any>): void {
     const prevState = this.getState();
     this.state = { ...this.state, ...nextState };
 

@@ -89,11 +89,12 @@
 
 .chat-list__item-inf {
   margin-right: auto;
+  display: flex;
+  align-items: center;
   h3 {
     color: var(--white);
     font-size: 18px;
     font-weight: 300;
-    margin-bottom: 21px;
   }
 
   p {
