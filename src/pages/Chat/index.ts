@@ -60,7 +60,7 @@ export class ChatPage extends Block {
   }
 
   public isActiveChat(): boolean {
-    if (this.children.chatList.activeChatId) return true
+    if (this.chatList.activeChatId) return true
     else return false;
   }
 

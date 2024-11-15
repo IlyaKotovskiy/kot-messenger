@@ -11,7 +11,7 @@ interface IChatList {
 }
 
 export class ChatList extends Block {
-  private activeChatId: number | null = null;
+  public activeChatId: number | null = null;
   private router: Router;
 
   constructor(props: IChatList) {
