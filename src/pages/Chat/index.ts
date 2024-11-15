@@ -46,10 +46,9 @@ export class ChatPage extends Block {
 
     if (activeChat && messageContent) {
       try {
-        console.log(message);
         this.setLists({ 
           messages: [...this.lists.messages, message]
-         })
+        })
         activeChat.sendMessage(messageContent);
         ChatController.sendMessage(messageContent);
         console.log("Message sent:", messageContent);
@@ -69,6 +68,7 @@ export class ChatPage extends Block {
 
   protected componentDidMount(): void {
     ChatController.getChats(this.children.chatList as ChatList);
+    ChatController.getUser();
   }
 
   protected render(): string {

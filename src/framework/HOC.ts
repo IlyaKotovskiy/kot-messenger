@@ -9,7 +9,7 @@ export function connect(Component: typeof Block) {
         super({ ...props, ...store.getState() });
 
         store.on(STORE_EVENTS.Updated, () => {
-          console.log("Store обновился");
+          console.log("Store обновился: ", store.getState());
           this.setProps({ ...store.getState() });
         });
       }

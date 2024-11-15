@@ -39,10 +39,6 @@ export class ChatItem extends Block {
     return this.props.online ? this.props.online : false;
   }
 
-  // public getMessages(): Message[] {
-  //   return this.lists.messages;
-  // }
-
   public sendMessage(content: string): void {
     const newMessage = ChatController.createMessage(content);
     this.lists.messages.push(newMessage);

@@ -6,6 +6,7 @@ import { Message } from "../../components/Message";
 import { WS_EVENTS } from "../../enum";
 import { selectors } from "../../framework/selectors";
 import store, { IChat } from "../../framework/store";
+import settingsAPI from "../Settings/settingsAPI";
 import ChatAPI from "./ChatAPI";
 
 class ChatController {
@@ -23,8 +24,6 @@ class ChatController {
       throw new Error('Не удалось получить токен для чата');
     }
     const url = `${WS_URL}${userId}/${chatId}/${token}`;
-
-    console.log('Токен в ChatController: ', token);
     
     
     this.socket = new WS(url);
@@ -91,9 +90,23 @@ class ChatController {
           chats: data
         },
       });
-      console.log(store.getState())
     } catch (err) {
       console.error("Ошибка при получении данных:", err);
+    }
+  }
+
+  public async getUser(): Promise<any> {
+    try {
+      const data = await settingsAPI
+        .getUser()
+        .then((res) => JSON.parse(res.response))
+      
+      store.setState({
+        user: data,
+        greetings: `Hello, ${data.first_name}!`,
+      });
+    } catch (err) {
+      throw new Error('При получении пользователя произошла ошибка: ', err);
     }
   }
 
@@ -107,9 +120,9 @@ class ChatController {
     }
   }
 
-  public createMessage(content: string): Message {
+  public createMessage(content: string, idMessage?: number): Message {
     return new Message({
-      id: Date.now(),
+      id: idMessage ? idMessage : Date.now(),
       message: content,
       author: 'Me'
     });
