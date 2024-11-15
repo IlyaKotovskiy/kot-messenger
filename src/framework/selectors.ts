@@ -7,6 +7,18 @@ class Selectors {
     return store.getState().user;
   }
 
+  public setAvatar(path: any): void {
+    store.setState({
+      user: {
+        avatar: path
+      }
+    });
+  }
+
+  public getAvatar(): string | undefined {
+    return store.getState().user?.avatar;
+  }
+
   public setUser(user: IUser | null): void {
     store.setState({ user });
   }

@@ -1,4 +1,5 @@
 import { RESOURCE_URL } from "../../api/url-api";
+import { selectors } from "../../framework/selectors";
 import store from "../../framework/store";
 import authAPI from "../Аuthorization/authAPI";
 import settingsAPI from "./settingsAPI";
@@ -13,12 +14,11 @@ class SettingsController {
       store.setState({
         user: data,
         greetings: `Hello, ${data.first_name}!`,
-      });  
+      });      
       
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'avatar' && value) {
-          const avatarInp = document.querySelector('.avatar') as HTMLImageElement;
-          avatarInp.src = `${RESOURCE_URL}/${value}`;
+          this.updateAvatar(data, value);
           return;
         }
         
@@ -35,15 +35,17 @@ class SettingsController {
   }
 
   public async updateUserData(): Promise<void> {
-    const inputs = document.querySelectorAll('input:not([type="password"])') as NodeListOf<HTMLInputElement>;
+    const inputs = document.querySelectorAll('input:not([type="password"]):not([type="file"])') as NodeListOf<HTMLInputElement>;
 
-    const updatedData: Record<string, string> = {};
+    const updatedData: any = selectors.getUser();
     inputs.forEach((input) => {
       const { name, value } = input;
       if (name) {
         updatedData[name] = value;
       }
     });
+    updatedData.avatar = selectors.getAvatar();
+
 
     try {
       await settingsAPI.updateUser(updatedData);
@@ -52,9 +54,10 @@ class SettingsController {
         user: updatedData,
         greetings: `Hello, ${updatedData.first_name}!`
       });
-
-      console.log("Данные успешно обновлены:", updatedData);
       this.updateGreeting();
+      
+      this.updAvatar(updatedData.avatar)
+      
     } catch (err) {
       console.error("Ошибка при обновлении данных:", err);
     }
@@ -85,14 +88,15 @@ class SettingsController {
   }
 
   public async handleAvatarChange(e: Event): Promise<void> {
-    const input = e.target as HTMLInputElement;    
+    if (e.target !== document.querySelector('input[type="file"]')) return;
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;    
+    
   
     if (input && input.files?.length) {
       const formData = new FormData();
       const file = input.files[0];
       formData.append('avatar', file);
-      console.log('FormData перед отправкой:', formData);
-  
+        
       try {
         const response = await settingsAPI.updateAvatar(formData);
         const userData = JSON.parse(response.response);
@@ -103,7 +107,8 @@ class SettingsController {
   
         const avatarElement = document.querySelector('.avatar') as HTMLImageElement;
         if (avatarElement) {
-          avatarElement.src = userData.avatar;
+          this.updateAvatar(userData, userData.avatar);
+          this.updateGreeting();
         }
   
         console.log('Аватар успешно обновлен:', userData);
@@ -113,6 +118,22 @@ class SettingsController {
     } else {
       console.error('Файл не выбран.');
     }
+  }
+
+  private updAvatar(url: any) {
+    const avatarInp = document.querySelector('.avatar') as HTMLImageElement;
+    avatarInp.src = `${url}`;
+  }
+
+  private updateAvatar(state: any, url: string | {}): void {
+    store.setState({
+      user: {
+        ...state,
+        avatar: `${RESOURCE_URL}${url}`
+      }
+    })
+    const avatarInp = document.querySelector('.avatar') as HTMLImageElement;
+    avatarInp.src = `${RESOURCE_URL}${url}`;
   }
 
   private updateGreeting = () => {
