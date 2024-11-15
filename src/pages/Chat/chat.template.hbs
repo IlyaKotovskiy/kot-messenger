@@ -1,5 +1,6 @@
 <section class="chat-page">
   {{{chatList}}}
+  {{#if active}}
   <div class="chat-box">
     <div class="chat-content">
       <div class="chat-content__interlocutor">
@@ -24,4 +25,13 @@
       </form>
     </div>
   </div>
+  {{else}}
+  <div class="chat-box">
+    <div class="chat-content">
+      <div class="selectItem">
+        <p class="selectText">Select a chat</p>
+      </div>
+    </div>
+  </div>
+  {{/if}}
 </section>

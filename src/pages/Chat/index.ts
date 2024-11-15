@@ -59,6 +59,11 @@ export class ChatPage extends Block {
     }
   }
 
+  public isActiveChat(): boolean {
+    if (this.children.chatList.activeChatId) return true
+    else return false;
+  }
+
   public click(e: Event): void {
     const btn = this._element?.querySelector("#addChat") as HTMLButtonElement;
     if (e.target === btn) {
@@ -72,6 +77,8 @@ export class ChatPage extends Block {
   }
 
   protected render(): string {
+    this.props.active = this.isActiveChat()
+    
     return templ;
   }
 }
