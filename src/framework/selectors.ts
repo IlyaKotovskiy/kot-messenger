@@ -6,6 +6,10 @@ class Selectors {
     return store.getState().user;
   }
 
+  public setUser(user: IUser | null): void {
+    store.setState({ user });
+  }
+
   public setMessages(messages: IMessage[]): void {
     const messageItems = messages.reverse();
     store.setState({ messages: messageItems });

@@ -1,3 +1,4 @@
+import { RESOURCE_URL } from "../../api/url-api";
 import store from "../../framework/store";
 import authAPI from "../Аuthorization/authAPI";
 import settingsAPI from "./settingsAPI";
@@ -12,9 +13,15 @@ class SettingsController {
       store.setState({
         user: data,
         greetings: `Hello, ${data.first_name}!`,
-      });
+      });  
       
       Object.entries(data).forEach(([key, value]) => {
+        if (key === 'avatar' && value) {
+          const avatarInp = document.querySelector('.avatar') as HTMLImageElement;
+          avatarInp.src = `${RESOURCE_URL}/${value}`;
+          return;
+        }
+        
         const inputElement = document.querySelector(`input[name="${key}"]`) as HTMLInputElement;
         
         if (inputElement) {
@@ -77,12 +84,41 @@ class SettingsController {
     }
   }
 
+  public async handleAvatarChange(e: Event): Promise<void> {
+    const input = e.target as HTMLInputElement;    
+  
+    if (input && input.files?.length) {
+      const formData = new FormData();
+      const file = input.files[0];
+      formData.append('avatar', file);
+      console.log('FormData перед отправкой:', formData);
+  
+      try {
+        const response = await settingsAPI.updateAvatar(formData);
+        const userData = JSON.parse(response.response);
+  
+        store.setState({
+          user: userData,
+        });
+  
+        const avatarElement = document.querySelector('.avatar') as HTMLImageElement;
+        if (avatarElement) {
+          avatarElement.src = userData.avatar;
+        }
+  
+        console.log('Аватар успешно обновлен:', userData);
+      } catch (err) {
+        console.error('Ошибка при обновлении аватара:', err);
+      }
+    } else {
+      console.error('Файл не выбран.');
+    }
+  }
+
   private updateGreeting = () => {
     const greetings = document.querySelector('.greetings');
     const userName = store.getState().greetings ?? `Hello, Guest!`;
-    if (greetings) {
-      console.log(userName);
-      
+    if (greetings) {      
       greetings.textContent = userName;
     }
   }

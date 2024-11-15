@@ -20,6 +20,10 @@ class SettingsAPI extends BaseAPI {
   }) {
     return this.put('/user/password', { data });
   }
+
+  public updateAvatar(data: FormData): Promise<any> {
+    return this.put('/user/profile/avatar', { data });
+  }
 }
 
 export default new SettingsAPI();

@@ -8,8 +8,8 @@ export class SettingsPage extends Block {
     super({
       ...props,
       events: {
-        // change: (e: Event) => SettingsController.updateData(e),
-        click: (e: Event) => SettingsController.handleClick(e)
+        click: (e: Event) => SettingsController.handleClick(e),
+        change: (e: Event) => SettingsController.handleAvatarChange(e)
       }
     });
   }
