@@ -1,6 +1,6 @@
-import { render } from "../utils/renderDOM";
-import Block from "./block";
-import { isEqual } from "../utils/isEqual";
+import { render } from "../utils/renderDOM.ts";
+import Block from "./block.ts";
+import { isEqual } from "../utils/isEqual.ts";
 
 type BlockProps = {
   rootQuery: string;

@@ -11,21 +11,30 @@
     "dev": "vite",
     "build": "vite build --emptyOutDir",
     "preview": "vite preview",
-    "start": "npm run build&& vite"
+    "start": "npm run build&& vite",
+    "prepare": "husky install",
+    "test": "mocha --no-warnings --exit"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.9",
+    "@types/node": "^22.9.0",
+    "@types/sinon": "^17.0.3",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "chai": "^5.1.2",
     "eslint": "^8.57.0",
+    "global-jsdom": "^25.0.0",
     "globals": "^15.9.0",
+    "husky": "^9.1.6",
+    "jsdom": "^25.0.1",
     "mocha": "^10.8.2",
+    "sinon": "^19.0.2",
     "stylelint": "^16.9.0",
     "stylelint-config-standard": "^36.0.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
     "uuid": "^10.0.0",
@@ -36,5 +45,10 @@
   "dependencies": {
     "handlebars": "^4.7.8",
     "sass": "^1.77.8"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run-all test lint:all"
+    }
   }
 }
