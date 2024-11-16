@@ -11,4 +11,4 @@ function omit<T extends object>(obj: T, fields: (keyof T)[]): Omit<T, typeof fie
   return shallowCopy;
 }
 
-export default omit
+export default omit;
