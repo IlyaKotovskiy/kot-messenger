@@ -16,7 +16,7 @@
     "test": "mocha --no-warnings --exit",
     "lint:css": "stylelint '**/*.{css,scss}'",
     "lint:css:fix": "stylelint '**/*.{css,scss}' --fix",
-    "pre-commit": "npm run test&& lint:css"
+    "pre-commit": "npm run test && npm run lint:css"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
