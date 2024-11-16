@@ -14,7 +14,6 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true,
     "emitDeclarationOnly": true,
     "strictPropertyInitialization": false,
     "baseUrl": "./src"
