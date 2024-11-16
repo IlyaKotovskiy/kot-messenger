@@ -1,9 +1,4 @@
-enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-};
+import { HTTP_METHODS } from "../enum";
 
 type HTTPMethod = (url: string, options?: Record<string, any>) => Promise<unknown>
 
@@ -20,27 +15,33 @@ function queryStringify(data: Record<string, any>): string {
 
 export class HTTPTransport {
   get: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.GET }, options.timeout);
   };
 
   post: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.POST }, options.timeout);
   };
 
   put: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.PUT }, options.timeout);
   };
 
   delete: HTTPMethod = (url, options = {}) => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    return this.request(url, { ...options, method: HTTP_METHODS.DELETE }, options.timeout);
   };
 
   request = (
     url: string,
-    options: { headers?: Record<string, string>, method?: METHODS, data?: any, timeout?: number } = {},
-    timeout: number = 5000
+    options: {
+      headers?: Record<string, string>,
+      method?: HTTP_METHODS,
+      data?: any,
+      timeout?: number,
+      withCredentials?: boolean
+    } = {},
+    timeout: number = 60000
   ): Promise<XMLHttpRequest> => {
-    const { headers = {}, method, data } = options;
+    const { headers = {}, method, data, withCredentials = true } = options;
 
     return new Promise(function (resolve, reject) {
       if (!method) {
@@ -49,7 +50,7 @@ export class HTTPTransport {
       }
 
       const xhr = new XMLHttpRequest();
-      const isGet = method === METHODS.GET;
+      const isGet = method === HTTP_METHODS.GET;
 
       xhr.open(
         method,
@@ -70,11 +71,15 @@ export class HTTPTransport {
       xhr.onerror = reject;
 
       xhr.timeout = timeout;
+      xhr.withCredentials = withCredentials;
       xhr.ontimeout = reject;
 
       if (isGet || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
+        xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(data));
       }
     });

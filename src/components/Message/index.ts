@@ -5,7 +5,7 @@ export class Message extends Block {
   constructor(props?: {}) {
     super({...props});
   }
-  protected render(): string {
+  public render(): string {
     return templ;
   }
 };

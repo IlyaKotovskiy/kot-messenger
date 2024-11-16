@@ -6,12 +6,65 @@
   display: flex;
 }
 
+// Chat List
+
+.chat-settings {
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  background-color: var(--white60per);
+  border-radius: 50%;
+  margin-left: 28px;
+  background-color: var(--greyd9);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .chat-list {
   background-color: var(--bg-blackout);
+  position: relative;
   width: 35vw;
   height: 100vh;
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
+}
+
+.chat-list__add-btn {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  transition: background-color var(--transition);
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+
+    background-color: white;
+
+    &:nth-child(1) {
+      transform: translateY(50%) rotate(90deg);
+    }
+
+    &:nth-child(2) {
+      transform: translateY(-50%);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(151, 151, 151, 0.301);
+  }
 }
 
 // Chat Item
@@ -36,11 +89,12 @@
 
 .chat-list__item-inf {
   margin-right: auto;
+  display: flex;
+  align-items: center;
   h3 {
     color: var(--white);
     font-size: 18px;
     font-weight: 300;
-    margin-bottom: 21px;
   }
 
   p {
@@ -89,6 +143,7 @@
 
 .chat-content__interlocutor {
   display: flex;
+  align-items: center;
   padding: 26px;
 }
 
@@ -118,9 +173,9 @@
 .mes-list {
   display: flex;
   flex-direction: column;
-  justify-content: end;
   height: calc(100% - 170px);
   padding: 0 26px;
+  overflow: auto;
 }
 
 .mes-list__message {
@@ -169,4 +224,39 @@
 .chat-content__message-send {
   background-color: transparent;
   border: none;
+}
+
+.selectItem {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectText {
+  font-size: 18px;
+  color: var(--white);
+}
+
+.users {
+  margin-left: auto;
+  margin-right: 40px;
+  display: flex;
+  gap: 12px;
+  
+  p {
+    color: var(--white60per);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--white80per);
+      border-bottom: 1px solid var(--white80per);
+    }
+  }
+}
+
+.add-user {
+  color: var(--greyd9);
+  cursor: pointer;
 }

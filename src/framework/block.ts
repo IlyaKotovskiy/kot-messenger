@@ -2,7 +2,7 @@ import compiler from '../utils/compiler';
 import EventBus, { EventCallback } from './eventBus';
 import { v4 as makeUUID } from 'uuid';
 
-interface BlockProps {
+export interface BlockProps {
   [key: string]: any;
 }
 
@@ -13,6 +13,9 @@ export default class Block {
     FLOW_CDU: 'flow:component-did-update',
     FLOW_RENDER: 'flow:render',
   };
+
+  private _parentElement: HTMLElement | null = null;
+  private _nextSibling: Node | null = null;
 
   protected _element: HTMLElement | null = null;
 
@@ -33,7 +36,7 @@ export default class Block {
     const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
     this.props = this._makePropsProxy({ ...props });
     this.children = children;
-    this.lists = lists;
+    this.lists = this._makePropsProxy({ ...lists });;
     this.eventBus = () => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
@@ -138,11 +141,19 @@ export default class Block {
     Object.assign(this.props, nextProps);
   };
 
+  public setLists = (nextProps: any): void => {
+    if (!nextProps) {
+      return;
+    }
+
+    Object.assign(this.lists, nextProps);
+  };
+
   get element(): HTMLElement | null {
     return this._element;
   }
   private _render(): void {
-    console.log('Render');
+    // console.log('Render');
     this._removeEvents();
 
     const propsAndStubs = { ...this.props };
@@ -162,7 +173,7 @@ export default class Block {
     Object.values(this.children).forEach(child => {
       const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
       if (stub) {
-        console.log(stub);
+        // console.log(stub);
 
         stub.replaceWith(child.getContent());
       }
@@ -227,11 +238,29 @@ export default class Block {
     return document.createElement(tagName) as HTMLTemplateElement;
   }
 
+  // Метод для показа и добавления элемента в DOM
   public show(): void {
-    this.getContent().style.display = 'block';
+    if (!this._element) {
+      throw new Error('Element was not found or created');
+    }
+
+    if (this._parentElement) {
+      this._parentElement.insertBefore(this._element, this._nextSibling);
+      this._parentElement = null;
+      this._nextSibling = null;
+    }
   }
 
   public hide(): void {
-    this.getContent().style.display = 'none';
+    if (!this._element) {
+      throw new Error('Element is not created');
+    }
+
+    this._parentElement = this._element.parentElement;
+    this._nextSibling = this._element.nextSibling;
+
+    if (this._parentElement) {
+      this._parentElement.removeChild(this._element);
+    }
   }
 }

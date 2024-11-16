@@ -26,6 +26,7 @@
   width: 160px;
   border-radius: 50%;
   margin-bottom: 26px;
+  cursor: pointer;
 }
 
 .greetings {
@@ -75,6 +76,12 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+}
+
+.settings-btns-wrap > .settings-btn {
+  &:nth-child(1) {
+    grid-column: span 2;
+  }
 }
 
 .settings-btn {
