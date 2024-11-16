@@ -154,7 +154,7 @@ export class AuthPage extends Block {
                 this.clearForm(formData);
                 this.router.go("/messenger");
               } else {
-                this.showFormError('Неверные данные.');
+                this.showFormError("Неверные данные.");
                 throw new Error("Неверные данные");
               }
             });
@@ -178,6 +178,18 @@ export class AuthPage extends Block {
     this.lists.inputs.forEach((inp) => inp.clearValue());
     Object.keys(formData).forEach((key) => {
       formData[key as keyof IFormData] = "";
+    });
+  }
+
+  protected componentDidMount(): void {
+    this.lists.inputs.forEach((input: any) => {
+      const inputElement = input.getContent().childNodes[3];
+      inputElement.addEventListener("blur", () => {      
+        const name = input.props.input.name;
+        const value = inputElement.value;
+        const errorMessage = this.validateField(name, value);
+        this.showError(input, errorMessage);
+      });
     });
   }
 
