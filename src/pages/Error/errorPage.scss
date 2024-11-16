@@ -1,18 +1,17 @@
 .wrap {
+  align-items: center;
+  background: no-repeat url('/images/backgrounds/bg_2.png') center / cover;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
   position: relative;
   width: 100vw;
-  height: 100vh;
-  background: no-repeat url('/images/backgrounds/bg_2.png') center / cover;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
     background-color: var(--bg-blackout);
+    content: '';
+    inset: 0;
+    position: absolute;
   }
 }
 
@@ -29,6 +28,6 @@
 }
 
 .error-description {
-  font-size: 24px;
   color: var(--greyc5);
+  font-size: 24px;
 }

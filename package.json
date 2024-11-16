@@ -13,7 +13,9 @@
     "preview": "vite preview",
     "start": "npm run build&& vite",
     "prepare": "husky install",
-    "test": "mocha --no-warnings --exit"
+    "test": "mocha --no-warnings --exit",
+    "lint:css": "stylelint '**/*.{css,scss}'",
+    "lint:css:fix": "stylelint '**/*.{css,scss}' --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -34,7 +36,11 @@
     "mocha": "^10.8.2",
     "sinon": "^19.0.2",
     "stylelint": "^16.9.0",
+    "stylelint-config-sass-guidelines": "^12.1.0",
     "stylelint-config-standard": "^36.0.1",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint-scss": "^6.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
@@ -49,7 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "test lint:all"
+      "pre-commit": "test lint:css"
     }
   }
 }
