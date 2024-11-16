@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "ES6",
-    "declaration": true,
+    "declaration": false,
     "module": "ESNext",
     "moduleResolution": "Node",
     "noImplicitAny": true,
@@ -14,7 +14,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "strictPropertyInitialization": false,
     "baseUrl": "./src"
   },
