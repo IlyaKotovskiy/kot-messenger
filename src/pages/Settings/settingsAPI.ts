@@ -24,6 +24,10 @@ class SettingsAPI extends BaseAPI {
   public updateAvatar(data: FormData): Promise<any> {
     return this.put('/user/profile/avatar', { data });
   }
+
+  public async searchUser(data: { login: string }): Promise<any> {
+    return await this.post('/user/search', { data });
+  }
 }
 
 export default new SettingsAPI();

@@ -19,6 +19,14 @@ class Selectors {
     return store.getState().user?.avatar;
   }
 
+  public getActiveChatId(): number | null | undefined {
+    return store.getState().chatsData?.activeChatId;
+  }
+
+  public getChatsData(): any {
+    return store.getState().chatsData;
+  }
+
   public setUser(user: IUser | null): void {
     store.setState({ user });
   }

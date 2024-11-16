@@ -143,6 +143,7 @@
 
 .chat-content__interlocutor {
   display: flex;
+  align-items: center;
   padding: 26px;
 }
 
@@ -236,4 +237,26 @@
 .selectText {
   font-size: 18px;
   color: var(--white);
+}
+
+.users {
+  margin-left: auto;
+  margin-right: 40px;
+  display: flex;
+  gap: 12px;
+  
+  p {
+    color: var(--white60per);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--white80per);
+      border-bottom: 1px solid var(--white80per);
+    }
+  }
+}
+
+.add-user {
+  color: var(--greyd9);
+  cursor: pointer;
 }

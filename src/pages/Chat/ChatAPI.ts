@@ -21,6 +21,14 @@ class ChatAPI extends BaseAPI {
   public async getToken(chatId: {}): Promise<ApiResponse> {
     return await this.post(`/token/${chatId}`);
   }
+
+  public addUserToChat(chatId: number, userId: number): Promise<ApiResponse> {
+    return this.put('/users', { data: { users: [userId], chatId: chatId } });
+  }
+
+  public async deleteUserFromChat(chatId: number, userId: number): Promise<ApiResponse> {
+    return this.delete('/users', { data: { users: [userId], chatId: chatId } })
+  }
 }
 
 export default new ChatAPI();

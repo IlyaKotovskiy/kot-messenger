@@ -2,6 +2,7 @@ import "./chat.scss";
 import Block from "../../framework/block";
 import templ from "./chat.template.hbs?raw";
 import modalContent from './chatModal.template.hbs?raw';
+import addUserTempl from './addUser.template.hbs?raw';
 import { ChatList } from "../../components/ChatList";
 import ChatController from "./ChatController";
 import { Modal } from "../../components/Modal";
@@ -22,8 +23,8 @@ export class ChatPage extends Block {
     store.on(STORE_EVENTS.Updated, this.handleStoreUpdate.bind(this));
     this.chatList = this.children.chatList as ChatList;
     this.modal = new Modal({
-      title: 'Добавить новый чат',
-      content: modalContent,
+      title: '',
+      content: '',
     });
     this.children.modal = this.modal;
   }
@@ -63,8 +64,18 @@ export class ChatPage extends Block {
   }
 
   public click(e: Event): void {
-    const btn = this._element?.querySelector("#addChat") as HTMLButtonElement;
-    if (e.target === btn) {
+    const target = e.target;
+    if (target === document.querySelector("#addChat")) {
+      this.modal.setProps({
+        title: 'Создать новый чат',
+        content: modalContent,
+      })
+      this.modal.on();
+    } else if (target === document.querySelector('#addUserBtn')) {
+      this.modal.setProps({
+        title: 'Добавить нового пользователя',
+        content: addUserTempl,
+      })
       this.modal.on();
     }
   }

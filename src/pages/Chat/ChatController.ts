@@ -150,6 +150,8 @@ class ChatController {
     });
     console.log('Message sent:', message);
   }
+
+  // public deleteUser(userId: number) {}
 }
 
 export default new ChatController();
