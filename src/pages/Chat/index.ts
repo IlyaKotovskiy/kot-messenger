@@ -53,9 +53,7 @@ export class ChatPage extends Block {
         ChatController.sendMessage(messageContent);
         console.log("Message sent:", messageContent);
         input.value = "";
-      } catch (err) {
-        console.error(err.message);
-      }
+      } catch (err) {}
     }
   }
 

@@ -106,7 +106,7 @@ class ChatController {
         greetings: `Hello, ${data.first_name}!`,
       });
     } catch (err) {
-      throw new Error('При получении пользователя произошла ошибка: ', err);
+      throw new Error('При получении пользователя произошла ошибка: ');
     }
   }
 

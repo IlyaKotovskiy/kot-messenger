@@ -30,7 +30,7 @@ class SettingsController {
       });
       this.updateGreeting();
     } catch (err) {
-      throw new Error('При получении пользователя произошла ошибка: ', err);
+      throw new Error('При получении пользователя произошла ошибка: ');
     }
   }
 
