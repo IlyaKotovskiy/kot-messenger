@@ -1,48 +1,46 @@
 .modal_blackout {
-  position: absolute;
-  inset: 0;
-  z-index: 1000;
-  display: none;
-
-  justify-content: center;
   align-items: center;
+  display: none;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+  z-index: 1000;
 
   &.modal--visible {
+    background-color: rgb(0 0 0 / 54.8%);
     display: flex;
-    background-color: rgba(0, 0, 0, 0.548);
   }
 }
 
 .modal {
-  position: relative;
-  padding: 20px 28px;
-  width: 40vw;
-  min-height: 20vh;
   background-color: var(--white);
   border-radius: 12px;
+  min-height: 20vh;
+  padding: 20px 28px;
+  position: relative;
+  width: 40vw;
 }
 
 .modal__close-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-
-  width: 26px;
-  height: 26px;
-
   background-color: transparent;
-  outline: none;
   border: none;
+  height: 26px;
+  outline: none;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 26px;
 
   span {
+    background-color: black;
     display: block;
-    width: 100%;
     height: 2px;
-    background-color: #000;
+    width: 100%;
 
     &:nth-child(1) {
       transform: translateY(50%) rotate(45deg);
     }
+
     &:nth-child(2) {
       transform: translateY(-50%) rotate(-45deg);
     }

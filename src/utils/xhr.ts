@@ -1,4 +1,4 @@
-import { HTTP_METHODS } from "../enum";
+import { HTTP_METHODS } from "../enum.ts";
 
 type HTTPMethod = (url: string, options?: Record<string, any>) => Promise<unknown>
 
@@ -43,7 +43,7 @@ export class HTTPTransport {
   ): Promise<XMLHttpRequest> => {
     const { headers = {}, method, data, withCredentials = true } = options;
 
-    return new Promise(function (resolve, reject) {
+    return new Promise<XMLHttpRequest>(function (resolve, reject) {
       if (!method) {
         reject('No method');
         return;

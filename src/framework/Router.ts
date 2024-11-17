@@ -1,6 +1,6 @@
-import { render } from "../utils/renderDOM";
-import Block from "./block";
-import { isEqual } from "../utils/isEqual";
+import { render } from "../utils/renderDOM.ts";
+import Block from "./block.ts";
+import { isEqual } from "../utils/isEqual.ts";
 
 type BlockProps = {
   rootQuery: string;
@@ -50,6 +50,7 @@ class Route {
 export default class Router {
   private static __instance: Router;
   private routes: Route[];
+  private blockedRoutes: Set<string>;
   private history: History;
   private _currentRoute: Route | null;
   private _rootQuery: string;
@@ -60,6 +61,7 @@ export default class Router {
     }
 
     this.routes = [];
+    this.blockedRoutes = new Set();
     this.history = window.history;
     this._currentRoute = null;
     this._rootQuery = rootQuery;
@@ -84,6 +86,12 @@ export default class Router {
 
   private _onRoute(pathname: string): void {
     const route = this.getRoute(pathname);
+
+    if (this.blockedRoutes.has(pathname)) {
+      this.go('/messenger');
+      return;
+    }
+
     if (!route) {
       return;
     }
@@ -97,6 +105,12 @@ export default class Router {
   }
 
   go(pathname: string): void {
+    if (this.blockedRoutes.has(pathname)) {
+      // Перенаправляем на другой маршрут, если этот заблокирован
+      this._onRoute('/messenger');
+      return;
+    }
+    
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }
@@ -111,5 +125,13 @@ export default class Router {
 
   getRoute(pathname: string): Route | undefined {
     return this.routes.find(route => route.match(pathname));
+  }
+
+  blockRoute(pathname: string): void {
+    this.blockedRoutes.add(pathname); // Добавляем путь в список заблокированных
+  }
+
+  unblockRoute(pathname: string): void {
+    this.blockedRoutes.delete(pathname); // Убираем путь из списка заблокированных
   }
 }

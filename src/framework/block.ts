@@ -1,5 +1,5 @@
-import compiler from '../utils/compiler';
-import EventBus, { EventCallback } from './eventBus';
+import compiler from '../utils/compiler.ts';
+import EventBus, { EventCallback } from './eventBus.ts';
 import { v4 as makeUUID } from 'uuid';
 
 export interface BlockProps {

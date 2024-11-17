@@ -53,9 +53,7 @@ export class ChatPage extends Block {
         ChatController.sendMessage(messageContent);
         console.log("Message sent:", messageContent);
         input.value = "";
-      } catch (err) {
-        console.error(err.message);
-      }
+      } catch (err) {}
     }
   }
 
@@ -82,7 +80,7 @@ export class ChatPage extends Block {
 
   protected componentDidMount(): void {
     ChatController.getChats(this.children.chatList as ChatList);
-    ChatController.getUser();
+    ChatController.getUser()
   }
 
   protected render(): string {

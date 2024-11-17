@@ -1,3 +1,4 @@
+import Router from "../../framework/Router";
 import { RESOURCE_URL } from "../../api/url-api";
 import { selectors } from "../../framework/selectors";
 import store from "../../framework/store";
@@ -5,6 +6,12 @@ import authAPI from "../Аuthorization/authAPI";
 import settingsAPI from "./settingsAPI";
 
 class SettingsController {
+  private router: Router;
+
+  constructor () {
+    this.router = new Router('app')
+  }
+
   public async getUser(): Promise<any> {
     try {
       const data = await settingsAPI
@@ -30,7 +37,7 @@ class SettingsController {
       });
       this.updateGreeting();
     } catch (err) {
-      throw new Error('При получении пользователя произошла ошибка: ', err);
+      throw new Error('При получении пользователя произошла ошибка: ');
     }
   }
 
@@ -154,7 +161,9 @@ class SettingsController {
       await this.updatePassword();
     }
     if (target.textContent?.trim() === 'Quit') {
-      authAPI.logout()
+      this.router.unblockRoute('/');
+      this.router.go('/');
+      authAPI.logout();
     }
   }
 }
