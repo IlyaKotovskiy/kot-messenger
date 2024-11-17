@@ -80,7 +80,7 @@ export class ChatPage extends Block {
 
   protected componentDidMount(): void {
     ChatController.getChats(this.children.chatList as ChatList);
-    ChatController.getUser();
+    ChatController.getUser()
   }
 
   protected render(): string {

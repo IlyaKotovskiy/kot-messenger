@@ -153,6 +153,7 @@ export class AuthPage extends Block {
               if (res.status !== HTTP_CODES.UNAUTHORIZED) {
                 this.clearForm(formData);
                 this.router.go("/messenger");
+                this.router.blockRoute('/');
               } else {
                 this.showFormError("Неверные данные.");
                 throw new Error("Неверные данные");
@@ -182,6 +183,20 @@ export class AuthPage extends Block {
   }
 
   protected componentDidMount(): void {
+    AuthAPI.getUser()
+      .then((res) => {
+        const data = JSON.parse(res.response);
+        if (!data.reason) {
+          console.log('Авторизован');
+
+          this.router.forward();
+          this.router.go("/messenger");
+        } else {
+          console.log('Не авторизован');
+          return
+        }
+      });
+    
     this.lists.inputs.forEach((input: any) => {
       const inputElement = input.getContent().childNodes[3];
       inputElement.addEventListener("blur", () => {      
