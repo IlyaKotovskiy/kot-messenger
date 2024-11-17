@@ -33,15 +33,15 @@ export class ChatList extends Block {
   public async setActiveChatById(chatId: number): Promise<void> {
     try {      
       const userId = selectors.getUser()?.id;
+      const activeChat = this.lists.chats.find(chat => chat.props.id === chatId);
 
       if (userId) {
         await ChatController.connectToChat(userId, chatId)
       }
-      const activeChat = this.lists.chats.find(chat => chat.props.id === chatId);
-
       if (!activeChat) {
         throw new Error(`Чат с id ${chatId} не найден`);
       }
+      this.activeChatId = chatId;
 
       store.setState({
         chatsData: {
@@ -49,14 +49,10 @@ export class ChatList extends Block {
           activeChatId: chatId,
         },
       });      
-      if (this.activeChatId === chatId) return;
 
       this.lists.chats.forEach((chat) => {
         chat.setProps({ activeChat: chat.props.id === chatId });
       });
-
-      this.activeChatId = chatId;
-      // this.setProps({ chats: this.lists.chats });
     } catch (err) {
       throw new Error('Возникла ошибка при подключении WS к чату')
     }
